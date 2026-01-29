@@ -44,6 +44,13 @@ export function HomePageClient({
 
   return (
     <>
+      {/* ICE Budget Spotlight Bar */}
+      <section className="border-b border-orange-500/20">
+        <div className="container mx-auto px-4 py-3 sm:px-6 lg:px-8">
+          <ICESpotlight />
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="bg-muted/10">
         <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -83,9 +90,6 @@ export function HomePageClient({
 
           {/* Right: Featured Comparisons + Comparison Builder (40% - 2 columns) */}
           <div className="space-y-6 lg:col-span-2">
-            {/* ICE Spending Spotlight */}
-            <ICESpotlight />
-
             {/* Featured Carousel */}
             <div>
               <FeaturedCarousel

@@ -8,15 +8,26 @@
  *
  * Usage:
  *   import { db } from '@/lib/db';
- *   const users = await db.select().from(usersTable);
+ *   if (db) {
+ *     const users = await db.select().from(usersTable);
+ *   }
  */
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is required");
+// Make database connection optional for build time
+const databaseUrl = process.env.DATABASE_URL;
+
+// Create db instance only if DATABASE_URL is provided
+export const db = databaseUrl
+  ? drizzle(neon(databaseUrl), { schema })
+  : null;
+
+// Helper to check if database is available
+export function isDatabaseAvailable(): boolean {
+  return db !== null;
 }
 
-const sql = neon(process.env.DATABASE_URL);
-export const db = drizzle(sql, { schema });
+// Type for the database instance
+export type Database = NonNullable<typeof db>;

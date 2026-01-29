@@ -101,7 +101,7 @@ const items: BudgetItem[] = [
     name: "Department of the Army",
     amount: 185_000_000_000,
     parentId: "dept-defense",
-    fiscalYear: 2024,
+    fiscalYear: 2025,
     percentOfParent: 22.0,
     yearOverYearChange: 2.5,
   },
@@ -113,7 +113,7 @@ const parentItem: BudgetItem = {
   name: "Department of Defense",
   amount: 842_000_000_000,
   parentId: null,
-  fiscalYear: 2024,
+  fiscalYear: 2025,
   percentOfParent: null,
   yearOverYearChange: 3.2,
 };

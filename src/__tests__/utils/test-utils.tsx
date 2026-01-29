@@ -5,15 +5,21 @@
  * for testing Budget Dashboard components
  */
 
-import { render, RenderOptions } from '@testing-library/react';
-import { ReactElement, ReactNode } from 'react';
-import { BudgetItem, LineItem, Program, Agency, Department } from '@/types/budget';
+import { render, RenderOptions } from "@testing-library/react";
+import { ReactElement, ReactNode } from "react";
+import {
+  BudgetItem,
+  LineItem,
+  Program,
+  Agency,
+  Department,
+} from "@/types/budget";
 import {
   Comparison,
   ComparisonUnit,
   FeaturedComparison,
-  ComparisonResult
-} from '@/types/comparison';
+  ComparisonResult,
+} from "@/types/comparison";
 
 /**
  * All providers wrapper for testing
@@ -39,7 +45,7 @@ function AllProviders({ children }: AllProvidersProps) {
  */
 export function renderWithProviders(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
+  options?: Omit<RenderOptions, "wrapper">,
 ) {
   return render(ui, { wrapper: AllProviders, ...options });
 }
@@ -54,14 +60,14 @@ export function renderWithProviders(
  * ```
  */
 export function mockBudgetItem(
-  overrides: Partial<BudgetItem> = {}
+  overrides: Partial<BudgetItem> = {},
 ): BudgetItem {
   return {
     id: `budget-item-${Date.now()}-${Math.random()}`,
-    name: 'Test Budget Item',
+    name: "Test Budget Item",
     amount: 1_000_000,
     parentId: null,
-    fiscalYear: 2024,
+    fiscalYear: 2025,
     percentOfParent: null,
     yearOverYearChange: null,
     ...overrides,
@@ -80,20 +86,18 @@ export function mockBudgetItem(
  * });
  * ```
  */
-export function mockLineItem(
-  overrides: Partial<LineItem> = {}
-): LineItem {
+export function mockLineItem(overrides: Partial<LineItem> = {}): LineItem {
   return {
     id: `line-item-${Date.now()}-${Math.random()}`,
-    name: 'Test Line Item',
+    name: "Test Line Item",
     amount: 100_000,
-    parentId: 'program-1',
-    fiscalYear: 2024,
+    parentId: "program-1",
+    fiscalYear: 2025,
     percentOfParent: 5,
     yearOverYearChange: 2.5,
-    description: 'Test line item description',
-    source: 'USAspending.gov',
-    lastUpdated: new Date('2024-01-01'),
+    description: "Test line item description",
+    source: "USAspending.gov",
+    lastUpdated: new Date("2024-01-01"),
     ...overrides,
   };
 }
@@ -110,15 +114,13 @@ export function mockLineItem(
  * });
  * ```
  */
-export function mockProgram(
-  overrides: Partial<Program> = {}
-): Program {
+export function mockProgram(overrides: Partial<Program> = {}): Program {
   return {
     id: `program-${Date.now()}-${Math.random()}`,
-    name: 'Test Program',
+    name: "Test Program",
     amount: 500_000,
-    parentId: 'agency-1',
-    fiscalYear: 2024,
+    parentId: "agency-1",
+    fiscalYear: 2025,
     percentOfParent: 10,
     yearOverYearChange: 3.2,
     lineItems: [],
@@ -138,15 +140,13 @@ export function mockProgram(
  * });
  * ```
  */
-export function mockAgency(
-  overrides: Partial<Agency> = {}
-): Agency {
+export function mockAgency(overrides: Partial<Agency> = {}): Agency {
   return {
     id: `agency-${Date.now()}-${Math.random()}`,
-    name: 'Test Agency',
+    name: "Test Agency",
     amount: 5_000_000,
-    parentId: 'department-1',
-    fiscalYear: 2024,
+    parentId: "department-1",
+    fiscalYear: 2025,
     percentOfParent: 20,
     yearOverYearChange: 1.8,
     programs: [],
@@ -168,14 +168,14 @@ export function mockAgency(
  * ```
  */
 export function mockDepartment(
-  overrides: Partial<Department> = {}
+  overrides: Partial<Department> = {},
 ): Department {
   return {
     id: `department-${Date.now()}-${Math.random()}`,
-    name: 'Test Department',
+    name: "Test Department",
     amount: 50_000_000,
     parentId: null,
-    fiscalYear: 2024,
+    fiscalYear: 2025,
     percentOfParent: null,
     yearOverYearChange: 2.1,
     agencies: [],
@@ -197,13 +197,13 @@ export function mockDepartment(
  * ```
  */
 export function mockUnit(
-  overrides: Partial<ComparisonUnit> = {}
+  overrides: Partial<ComparisonUnit> = {},
 ): ComparisonUnit {
   return {
     id: `unit-${Date.now()}-${Math.random()}`,
-    name: 'Test Unit',
-    costPerUnit: 10.00,
-    category: 'products',
+    name: "Test Unit",
+    costPerUnit: 10.0,
+    category: "products",
     source: undefined,
     sourceUrl: undefined,
     ...overrides,
@@ -224,19 +224,19 @@ export function mockUnit(
  * ```
  */
 export function mockComparison(
-  overrides: Partial<Comparison> = {}
+  overrides: Partial<Comparison> = {},
 ): Comparison {
   const budgetAmount = overrides.budgetAmount ?? 1_000_000;
-  const unitId = overrides.unitId ?? 'unit-1';
+  const unitId = overrides.unitId ?? "unit-1";
   const unitCount = overrides.unitCount ?? 100_000;
 
   return {
     id: `comparison-${Date.now()}-${Math.random()}`,
-    budgetItemId: 'budget-item-1',
+    budgetItemId: "budget-item-1",
     budgetAmount,
     unitId,
     unitCount,
-    createdAt: new Date('2024-01-01'),
+    createdAt: new Date("2024-01-01"),
     ...overrides,
   };
 }
@@ -255,13 +255,13 @@ export function mockComparison(
  * ```
  */
 export function mockFeaturedComparison(
-  overrides: Partial<FeaturedComparison> = {}
+  overrides: Partial<FeaturedComparison> = {},
 ): FeaturedComparison {
   const baseComparison = mockComparison(overrides);
 
   return {
     ...baseComparison,
-    headline: 'Featured Comparison Headline',
+    headline: "Featured Comparison Headline",
     isFeatured: true,
     displayOrder: 1,
     ...overrides,
@@ -282,10 +282,10 @@ export function mockFeaturedComparison(
  * ```
  */
 export function mockComparisonResult(
-  overrides: Partial<ComparisonResult> = {}
+  overrides: Partial<ComparisonResult> = {},
 ): ComparisonResult {
-  const budgetItemName = overrides.budgetItemName ?? 'Test Budget Item';
-  const unitName = overrides.unitName ?? 'Test Units';
+  const budgetItemName = overrides.budgetItemName ?? "Test Budget Item";
+  const unitName = overrides.unitName ?? "Test Units";
   const unitCount = overrides.unitCount ?? 100;
 
   return {
@@ -294,7 +294,7 @@ export function mockComparisonResult(
     unitName,
     unitCount,
     formattedString: `${budgetItemName} equals ${unitCount.toLocaleString()} ${unitName}`,
-    category: 'products',
+    category: "products",
     ...overrides,
   };
 }
@@ -311,38 +311,38 @@ export function mockComparisonResult(
  */
 export function createMockBudgetHierarchy() {
   const lineItem1 = mockLineItem({
-    id: 'line-1',
-    name: 'Line Item 1',
+    id: "line-1",
+    name: "Line Item 1",
     amount: 50_000,
-    parentId: 'program-1',
+    parentId: "program-1",
   });
 
   const lineItem2 = mockLineItem({
-    id: 'line-2',
-    name: 'Line Item 2',
+    id: "line-2",
+    name: "Line Item 2",
     amount: 50_000,
-    parentId: 'program-1',
+    parentId: "program-1",
   });
 
   const program = mockProgram({
-    id: 'program-1',
-    name: 'Test Program',
+    id: "program-1",
+    name: "Test Program",
     amount: 100_000,
-    parentId: 'agency-1',
+    parentId: "agency-1",
     lineItems: [lineItem1, lineItem2],
   });
 
   const agency = mockAgency({
-    id: 'agency-1',
-    name: 'Test Agency',
+    id: "agency-1",
+    name: "Test Agency",
     amount: 100_000,
-    parentId: 'department-1',
+    parentId: "department-1",
     programs: [program],
   });
 
   const department = mockDepartment({
-    id: 'department-1',
-    name: 'Test Department',
+    id: "department-1",
+    name: "Test Department",
     amount: 100_000,
     parentId: null,
     agencies: [agency],
@@ -384,4 +384,4 @@ export const waitForNextUpdate = () =>
  * await user.click(screen.getByRole('button'));
  * ```
  */
-export * from '@testing-library/react';
+export * from "@testing-library/react";

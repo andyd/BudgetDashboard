@@ -1,80 +1,85 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeftIcon } from 'lucide-react';
-import { BudgetBreadcrumb } from '@/components/budget/BudgetBreadcrumb';
-import { SpotlightPanel } from '@/components/budget/SpotlightPanel';
-import { YearOverYearIndicator } from '@/components/budget/YearOverYearIndicator';
-import { BudgetPieChart } from '@/components/budget/BudgetPieChart';
-import { ComparisonCard } from '@/components/comparison/ComparisonCard';
-import { Button } from '@/components/ui/button';
-import type { BudgetItem } from '@/types/budget';
-import { formatCurrency, formatCompact } from '@/lib/format';
-import { mockUnits } from '@/lib/mock-data/units';
-import { convertBudgetToUnits } from '@/lib/unit-converter';
+import * as React from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeftIcon } from "lucide-react";
+import { BudgetBreadcrumb } from "@/components/budget/BudgetBreadcrumb";
+import { SpotlightPanel } from "@/components/budget/SpotlightPanel";
+import { YearOverYearIndicator } from "@/components/budget/YearOverYearIndicator";
+import { BudgetPieChart } from "@/components/budget/BudgetPieChart";
+import { ComparisonCard } from "@/components/comparison/ComparisonCard";
+import { Button } from "@/components/ui/button";
+import type { BudgetItem } from "@/types/budget";
+import { formatCurrency, formatCompact } from "@/lib/format";
+import { mockUnits } from "@/lib/mock-data/units";
+import { convertBudgetToUnits } from "@/lib/unit-converter";
 
 interface BudgetData {
   item: BudgetItem & { children?: BudgetItem[] };
   breadcrumbs: Array<{ id: string; name: string; slug: string }>;
-  spotlight?: {
-    title: string;
-    description: string;
-    sources: Array<{ label: string; url: string }>;
-  } | undefined;
+  spotlight?:
+    | {
+        title: string;
+        description: string;
+        sources: Array<{ label: string; url: string }>;
+      }
+    | undefined;
 }
 
 /**
  * Mock data - Replace with actual API calls
  */
 function getBudgetItemByPath(path: string[]): BudgetData | null {
-  const mockData: Record<string, BudgetData['item'] & { spotlight?: BudgetData['spotlight'] }> = {
+  const mockData: Record<
+    string,
+    BudgetData["item"] & { spotlight?: BudgetData["spotlight"] }
+  > = {
     defense: {
-      id: 'dept-defense',
-      name: 'Department of Defense',
+      id: "dept-defense",
+      name: "Department of Defense",
       amount: 842_000_000_000,
       parentId: null,
-      fiscalYear: 2024,
+      fiscalYear: 2025,
       percentOfParent: 13.2,
       yearOverYearChange: 3.1,
       children: [
         {
-          id: 'defense-navy',
-          name: 'Navy',
+          id: "defense-navy",
+          name: "Navy",
           amount: 255_800_000_000,
-          parentId: 'dept-defense',
-          fiscalYear: 2024,
+          parentId: "dept-defense",
+          fiscalYear: 2025,
           percentOfParent: 30.4,
           yearOverYearChange: 4.2,
         },
         {
-          id: 'defense-army',
-          name: 'Army',
+          id: "defense-army",
+          name: "Army",
           amount: 185_900_000_000,
-          parentId: 'dept-defense',
-          fiscalYear: 2024,
+          parentId: "dept-defense",
+          fiscalYear: 2025,
           percentOfParent: 22.1,
           yearOverYearChange: 1.5,
         },
         {
-          id: 'defense-air-force',
-          name: 'Air Force',
+          id: "defense-air-force",
+          name: "Air Force",
           amount: 194_600_000_000,
-          parentId: 'dept-defense',
-          fiscalYear: 2024,
+          parentId: "dept-defense",
+          fiscalYear: 2025,
           percentOfParent: 23.1,
           yearOverYearChange: 5.3,
         },
       ],
       spotlight: {
-        title: 'Defense Department Budget',
+        title: "Defense Department Budget",
         description:
-          'The Department of Defense budget covers military operations, personnel salaries, equipment, research and development, and facility maintenance across all branches of the armed forces.',
+          "The Department of Defense budget covers military operations, personnel salaries, equipment, research and development, and facility maintenance across all branches of the armed forces.",
         sources: [
           {
-            label: 'DoD Budget Request FY2024',
-            url: 'https://comptroller.defense.gov/Budget-Materials/',
+            label: "DoD Budget Request FY2025",
+            url: "https://comptroller.defense.gov/Budget-Materials/",
           },
         ],
       },
@@ -95,7 +100,7 @@ function getBudgetItemByPath(path: string[]): BudgetData | null {
   return {
     item: data,
     breadcrumbs: [
-      { id: 'root', name: 'Federal Budget', slug: '' },
+      { id: "root", name: "Federal Budget", slug: "" },
       { id: data.id, name: data.name, slug: key },
     ],
     spotlight: data.spotlight,
@@ -127,11 +132,9 @@ export default function BudgetDrillDownPage() {
   const hasChildren = item.children && item.children.length > 0;
 
   const parentPath =
-    path.length > 1
-      ? `/budget/${path.slice(0, -1).join('/')}`
-      : '/';
+    path.length > 1 ? `/budget/${path.slice(0, -1).join("/")}` : "/";
 
-  const relevantUnit = mockUnits.find((u) => u.category === 'everyday');
+  const relevantUnit = mockUnits.find((u) => u.category === "everyday");
   const unitCount = relevantUnit
     ? convertBudgetToUnits(item.amount, relevantUnit)
     : null;
@@ -141,9 +144,9 @@ export default function BudgetDrillDownPage() {
     if (clickedItem) {
       const slug = clickedItem.name
         .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
-      router.push(`/budget/${path.join('/')}/${slug}`);
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      router.push(`/budget/${path.join("/")}/${slug}`);
     }
   };
 
@@ -224,9 +227,9 @@ export default function BudgetDrillDownPage() {
             <BudgetPieChart
               data={{
                 root: item,
-                departments: (item.children || []).map(child => ({
+                departments: (item.children || []).map((child) => ({
                   ...child,
-                  agencies: [] // Children at this level don't have agencies
+                  agencies: [], // Children at this level don't have agencies
                 })),
                 totalAmount: item.amount,
                 fiscalYear: item.fiscalYear,

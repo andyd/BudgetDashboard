@@ -67,7 +67,7 @@ import {
 
 <Card>
   <CardHeader>
-    <CardTitle>Defense Spending FY 2024</CardTitle>
+    <CardTitle>Defense Spending FY 2025</CardTitle>
   </CardHeader>
   <CardContent className="space-y-4">
     <p className="text-sm text-muted-foreground">

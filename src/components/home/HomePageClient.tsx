@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { BudgetPieChart } from '@/components/budget/BudgetPieChart';
-import { DataFreshnessIndicator } from '@/components/budget/DataFreshnessIndicator';
-import { FeaturedCarousel } from '@/components/comparison/FeaturedCarousel';
-import { ComparisonBuilder } from '@/components/comparison/ComparisonBuilder';
-import type { BudgetHierarchy, BudgetItem } from '@/types/budget';
-import type { FeaturedComparison } from '@/types/comparison';
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { BudgetPieChart } from "@/components/budget/BudgetPieChart";
+import { DataFreshnessIndicator } from "@/components/budget/DataFreshnessIndicator";
+import { FeaturedCarousel } from "@/components/comparison/FeaturedCarousel";
+import { ComparisonBuilder } from "@/components/comparison/ComparisonBuilder";
+import type { BudgetHierarchy, BudgetItem } from "@/types/budget";
+import type { FeaturedComparison } from "@/types/comparison";
 
 interface HomePageClientProps {
   budgetData: BudgetHierarchy;
@@ -32,13 +32,13 @@ export function HomePageClient({
 
   const handleItemHover = (itemId: string | null) => {
     // Could update a store to show contextual comparisons
-    console.log('Hovering budget item:', itemId);
+    console.log("Hovering budget item:", itemId);
   };
 
   const handleBuilderShare = (budgetItemId: string, unitId: string) => {
     const shareUrl = `${window.location.origin}/compare/custom?budget=${budgetItemId}&unit=${unitId}`;
     navigator.clipboard.writeText(shareUrl);
-    console.log('Share comparison:', { budgetItemId, unitId });
+    console.log("Share comparison:", { budgetItemId, unitId });
   };
 
   return (
@@ -150,9 +150,9 @@ export function HomePageClient({
           <div className="rounded-lg border bg-card p-6">
             <div className="mb-4 text-4xl">💰</div>
             <h3 className="mb-2 text-lg font-semibold">Total Federal Budget</h3>
-            <p className="mb-2 text-3xl font-bold text-primary">$6.1T</p>
+            <p className="mb-2 text-3xl font-bold text-primary">$7.0T</p>
             <p className="text-sm text-muted-foreground">
-              The complete federal budget for FY 2024, including mandatory and
+              The complete federal budget for FY 2025, including mandatory and
               discretionary spending
             </p>
           </div>

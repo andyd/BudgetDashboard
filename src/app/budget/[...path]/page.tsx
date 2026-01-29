@@ -1,5 +1,7 @@
+'use client';
+
 import * as React from 'react';
-import { notFound } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeftIcon } from 'lucide-react';
 import { BudgetBreadcrumb } from '@/components/budget/BudgetBreadcrumb';
@@ -13,16 +15,7 @@ import { formatCurrency, formatCompact } from '@/lib/format';
 import { mockUnits } from '@/lib/mock-data/units';
 import { convertBudgetToUnits } from '@/lib/unit-converter';
 
-interface PageProps {
-  params: Promise<{
-    path: string[];
-  }>;
-}
-
-/**
- * Mock data fetching - Replace with actual API calls
- */
-async function getBudgetItemByPath(path: string[]): Promise<{
+interface BudgetData {
   item: BudgetItem & { children?: BudgetItem[] };
   breadcrumbs: Array<{ id: string; name: string; slug: string }>;
   spotlight?: {
@@ -30,10 +23,13 @@ async function getBudgetItemByPath(path: string[]): Promise<{
     description: string;
     sources: Array<{ label: string; url: string }>;
   };
-} | null> {
-  // TODO: Replace with actual database/API call
-  // For now, return mock data structure
-  const mockData: Record<string, any> = {
+}
+
+/**
+ * Mock data - Replace with actual API calls
+ */
+function getBudgetItemByPath(path: string[]): BudgetData | null {
+  const mockData: Record<string, BudgetData['item'] & { spotlight?: BudgetData['spotlight'] }> = {
     defense: {
       id: 'dept-defense',
       name: 'Department of Defense',
@@ -85,7 +81,6 @@ async function getBudgetItemByPath(path: string[]): Promise<{
     },
   };
 
-  // Simple path lookup (first segment only for mock)
   const key = path[0];
   const data = mockData[key];
 
@@ -103,54 +98,50 @@ async function getBudgetItemByPath(path: string[]): Promise<{
   };
 }
 
-/**
- * Generate static params for top-level departments
- */
-export async function generateStaticParams() {
-  // TODO: Replace with actual data source
-  const topLevelDepartments = [
-    'defense',
-    'health-human-services',
-    'treasury',
-    'education',
-    'veterans-affairs',
-    'homeland-security',
-    'justice',
-    'agriculture',
-    'transportation',
-    'energy',
-  ];
+export default function BudgetDrillDownPage() {
+  const params = useParams();
+  const router = useRouter();
+  const path = (params.path as string[]) || [];
 
-  return topLevelDepartments.map((dept) => ({
-    path: [dept],
-  }));
-}
-
-export default async function BudgetDrillDownPage(props: PageProps) {
-  const params = await props.params;
-  const { path } = params;
-
-  // Fetch budget data for this path
-  const budgetData = await getBudgetItemByPath(path);
+  const budgetData = getBudgetItemByPath(path);
 
   if (!budgetData) {
-    notFound();
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-7xl text-center">
+        <h1 className="text-2xl font-bold mb-4">Budget Item Not Found</h1>
+        <p className="text-muted-foreground mb-4">
+          The budget item you&apos;re looking for doesn&apos;t exist.
+        </p>
+        <Button asChild>
+          <Link href="/">Return Home</Link>
+        </Button>
+      </div>
+    );
   }
 
   const { item, breadcrumbs, spotlight } = budgetData;
   const hasChildren = item.children && item.children.length > 0;
 
-  // Calculate parent path for back button
   const parentPath =
     path.length > 1
       ? `/budget/${path.slice(0, -1).join('/')}`
       : '/';
 
-  // Find a relevant comparison unit
   const relevantUnit = mockUnits.find((u) => u.category === 'everyday');
   const comparisonResult = relevantUnit
     ? convertBudgetToUnits(item.amount, relevantUnit)
     : null;
+
+  const handleItemClick = (itemId: string) => {
+    const clickedItem = item.children?.find((c) => c.id === itemId);
+    if (clickedItem) {
+      const slug = clickedItem.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+      router.push(`/budget/${path.join('/')}/${slug}`);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -233,17 +224,7 @@ export default async function BudgetDrillDownPage(props: PageProps) {
                 totalAmount: item.amount,
                 fiscalYear: item.fiscalYear,
               }}
-              onItemClick={(itemId) => {
-                // Find the clicked item and navigate to it
-                const clickedItem = item.children?.find((c) => c.id === itemId);
-                if (clickedItem) {
-                  const slug = clickedItem.name
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/(^-|-$)/g, '');
-                  window.location.href = `/budget/${path.join('/')}/${slug}`;
-                }
-              }}
+              onItemClick={handleItemClick}
             />
           </div>
         </div>

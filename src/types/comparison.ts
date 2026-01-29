@@ -15,22 +15,36 @@ export interface ComparisonUnit {
   name: string;
 
   /** Singular form of the name */
-  nameSingular: string;
+  nameSingular?: string;
 
   /** Plural form of the name */
   pluralName?: string;
 
   /** Cost per unit in dollars */
-  costPerUnit: number;
+  costPerUnit?: number;
 
   /** Alternative cost property name */
   cost?: number;
 
   /** Time period for recurring costs */
-  period?: 'year' | 'month' | 'day' | 'unit';
+  period?: "year" | "month" | "day" | "unit";
 
   /** Category for grouping units */
-  category: 'infrastructure' | 'everyday' | 'vehicles' | 'buildings' | 'misc' | 'food' | 'entertainment' | 'products' | 'transportation' | 'salary' | 'healthcare' | 'education' | 'general';
+  category:
+    | "infrastructure"
+    | "everyday"
+    | "vehicles"
+    | "buildings"
+    | "misc"
+    | "food"
+    | "entertainment"
+    | "products"
+    | "transportation"
+    | "salary"
+    | "healthcare"
+    | "education"
+    | "general"
+    | "housing";
 
   /** Short description */
   description?: string;
@@ -40,6 +54,9 @@ export interface ComparisonUnit {
 
   /** Source attribution */
   source?: string;
+
+  /** Source URL (legacy) */
+  sourceUrl?: string;
 }
 
 /**
@@ -66,6 +83,9 @@ export interface ComparisonResult {
 
   /** Formatted string (legacy) */
   formattedString?: string;
+
+  /** Budget amount (legacy) */
+  budgetAmount?: number;
 }
 
 /**
@@ -120,6 +140,9 @@ export interface FeaturedComparison {
   /** Unit cost (legacy) */
   unitCost?: number;
 
+  /** Unit count (legacy) */
+  unitCount?: number;
+
   /** Formula string (legacy) */
   formula?: string;
 
@@ -163,3 +186,9 @@ export interface ShareableComparison {
   /** Creation timestamp */
   createdAt: Date;
 }
+
+/**
+ * Type alias for Comparison (legacy)
+ * Use FeaturedComparison instead
+ */
+export type Comparison = FeaturedComparison;

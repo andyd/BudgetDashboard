@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Link from 'next/link';
-import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import Link from "next/link";
+import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 interface BreadcrumbSegment {
   id: string;
@@ -25,24 +25,24 @@ interface BudgetBreadcrumbProps {
 export function BudgetBreadcrumb({ path, className }: BudgetBreadcrumbProps) {
   // For mobile: show first, last, and collapse middle segments
   const shouldCollapse = path.length > 3;
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
   // Build full URL path for each segment
   const getSegmentUrl = (index: number): string => {
     const segments = path.slice(0, index + 1);
-    return `/budget/${segments.map((s) => s.slug).join('/')}`;
+    return `/budget/${segments.map((s) => s.slug).join("/")}`;
   };
 
   // Mobile collapsed view
-  if (isMobile && shouldCollapse) {
-    const first = path[0];
-    const last = path[path.length - 1];
+  if (isMobile && shouldCollapse && path.length > 0) {
+    const first = path[0]!;
+    const last = path[path.length - 1]!;
     const middle = path.slice(1, -1);
 
     return (
       <nav
         aria-label="Budget breadcrumb navigation"
-        className={cn('flex items-center text-sm', className)}
+        className={cn("flex items-center text-sm", className)}
       >
         <ol className="flex items-center gap-1 overflow-hidden">
           {/* First segment */}
@@ -103,7 +103,7 @@ export function BudgetBreadcrumb({ path, className }: BudgetBreadcrumbProps) {
   return (
     <nav
       aria-label="Budget breadcrumb navigation"
-      className={cn('flex items-center text-sm', className)}
+      className={cn("flex items-center text-sm", className)}
     >
       <ol className="flex items-center gap-1 overflow-hidden flex-wrap">
         {path.map((segment, index) => {

@@ -5,22 +5,8 @@ import { ArrowLeft, TrendingUp } from 'lucide-react';
 import { ComparisonCard } from '@/components/comparison/ComparisonCard';
 import { ShareButton } from '@/components/comparison/ShareButton';
 import { Button } from '@/components/ui/button';
-import { MainLayout } from '@/components/layout/main-layout';
 import type { FeaturedComparison, ComparisonUnit } from '@/types/comparison';
 import type { BudgetItem } from '@/types/budget';
-
-/**
- * Adapter type for ComparisonUnit to match ComparisonCard expectations
- * TODO: Align types across the application
- */
-type CardComparisonUnit = {
-  name: string;
-  value: number;
-  frequency: string;
-  source: string;
-  sourceUrl: string;
-  description?: string | undefined;
-};
 
 interface ComparisonPageProps {
   params: Promise<{
@@ -142,39 +128,28 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
 
   const { comparison, budgetItem, unit } = data;
 
-  // Adapter: Convert ComparisonUnit to CardComparisonUnit format
-  // TODO: Remove this once types are aligned across the application
-  const adaptedUnit: CardComparisonUnit = {
-    name: unit.name,
-    value: unit.costPerUnit,
-    frequency: 'item', // Default frequency
-    source: 'USAspending.gov', // Default source
-    sourceUrl: 'https://www.usaspending.gov',
-    description: unit.description,
-  };
-
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto px-4 py-8 md:py-16">
-          {/* Back Navigation */}
-          <div className="mb-8">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        {/* Back Navigation */}
+        <div className="mb-8">
+          <Link href="/">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft />
+              Back to Dashboard
+            </Button>
+          </Link>
+        </div>
 
-          {/* Main Content */}
-          <div className="max-w-4xl mx-auto space-y-8">
+        {/* Main Content */}
+        <div className="max-w-4xl mx-auto space-y-8">
             {/* Large Comparison Card - Hero Element */}
             <div className="transform transition-all duration-300 hover:scale-[1.01]">
               <ComparisonCard
                 budgetAmount={comparison.budgetAmount}
                 unitCount={comparison.result.unitCount}
-                unit={adaptedUnit}
+                unit={unit}
                 headline={comparison.headline}
                 {...(comparison.context && { context: comparison.context })}
                 className="shadow-2xl border-2"
@@ -260,24 +235,24 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
               </Link>
             </div>
 
-            {/* Additional Information */}
-            <div className="border-t pt-6 text-center text-sm text-muted-foreground">
-              <p>
-                Data sourced from{' '}
-                <a
-                  href="https://www.usaspending.gov"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-foreground transition-colors"
-                >
-                  USAspending.gov
-                </a>
-                {'. '}Fiscal Year: {budgetItem.fiscalYear}
-              </p>
-            </div>
+          {/* Additional Information */}
+          <div className="border-t pt-6 text-center text-sm text-muted-foreground">
+            <p>
+              Data sourced from{' '}
+              <a
+                href="https://www.usaspending.gov"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground transition-colors"
+              >
+                USAspending.gov
+              </a>
+              {'. '}Fiscal Year: {budgetItem.fiscalYear}
+            </p>
           </div>
         </div>
       </div>
+    </div>
     </MainLayout>
   );
 }

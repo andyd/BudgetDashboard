@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { MainLayout } from '@/components/layout/main-layout';
 import {
   Card,
   CardContent,
@@ -99,7 +98,7 @@ export default function ContactPage() {
   };
 
   return (
-    <MainLayout>
+    <>
       {/* Hero Section */}
       <section className="from-background via-background to-muted/20 relative overflow-hidden bg-gradient-to-br py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -337,6 +336,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </MainLayout>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { MainLayout } from '@/components/layout/main-layout';
 import {
   Card,
   CardContent,
@@ -68,7 +67,7 @@ const methodologyPoints = [
 
 export default function AboutPage() {
   return (
-    <MainLayout>
+    <>
       {/* Hero Section */}
       <section className="from-background via-background to-muted/20 relative overflow-hidden bg-gradient-to-br py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -313,6 +312,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </MainLayout>
+    </>
   );
 }

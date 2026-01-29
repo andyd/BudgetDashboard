@@ -5,7 +5,7 @@
  * All animations use consistent timing and easing for polish.
  */
 
-import { Variants } from 'framer-motion';
+import { type Variants } from './framer-client';
 
 // Timing constants for consistency
 const TIMING = {

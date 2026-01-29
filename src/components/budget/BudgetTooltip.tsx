@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "@/lib/framer-client";
 import { BudgetItem } from "@/types/budget";
 import { useEffect, useState } from "react";
 

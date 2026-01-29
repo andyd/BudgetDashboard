@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { BudgetTreemap } from '@/components/budget/BudgetTreemap';
+import { BudgetPieChart } from '@/components/budget/BudgetPieChart';
 import { DataFreshnessIndicator } from '@/components/budget/DataFreshnessIndicator';
 import { FeaturedCarousel } from '@/components/comparison/FeaturedCarousel';
 import { ComparisonBuilder } from '@/components/comparison/ComparisonBuilder';
@@ -37,7 +37,7 @@ export function HomePageClient({
 
   const handleShare = (comparison: FeaturedComparison) => {
     // Generate share URL and show share dialog
-    const shareUrl = `${window.location.origin}/compare/${comparison.comparison.id}`;
+    const shareUrl = `${window.location.origin}/compare/${comparison.id}`;
     navigator.clipboard.writeText(shareUrl);
     console.log('Copied share URL:', shareUrl);
   };
@@ -76,10 +76,10 @@ export function HomePageClient({
       {/* Main Visualization Section - Side by Side Layout */}
       <section className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
-          {/* Left: Budget Treemap (60% - 3 columns) */}
+          {/* Left: Budget Pie Chart (60% - 3 columns) */}
           <div className="lg:col-span-3">
             <div className="sticky top-4 h-[600px]">
-              <BudgetTreemap
+              <BudgetPieChart
                 data={budgetData}
                 onItemClick={handleItemClick}
                 onItemHover={handleItemHover}

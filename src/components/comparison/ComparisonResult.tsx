@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring } from "@/lib/framer-client";
 import { Card } from "@/components/ui/card";
 import type { ComparisonResult as ComparisonResultType } from "@/types/comparison";
 

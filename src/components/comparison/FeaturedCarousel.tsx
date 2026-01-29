@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "@/lib/framer-client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ComparisonCard } from "./ComparisonCard";
 import { Button } from "@/components/ui/button";

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { MainLayout } from '@/components/layout/main-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Database, Calculator, AlertCircle, RefreshCw, BookOpen } from 'lucide-react';
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function MethodologyPage() {
   return (
-    <MainLayout>
+    <>
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Header */}
         <div className="mb-12">
@@ -532,6 +531,6 @@ export default function MethodologyPage() {
           </Card>
         </section>
       </div>
-    </MainLayout>
+    </>
   );
 }

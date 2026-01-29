@@ -1,0 +1,6 @@
+
+> andyd-webapp-starter@0.1.0 build /Users/andyd/code/1-Web-Apps/BudgetDashboard
+> next build
+
+sh: next: command not found
+ ELIFECYCLE  Command failed.

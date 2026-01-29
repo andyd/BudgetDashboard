@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from 'lucide-react';
 import { BudgetBreadcrumb } from '@/components/budget/BudgetBreadcrumb';
 import { SpotlightPanel } from '@/components/budget/SpotlightPanel';
 import { YearOverYearIndicator } from '@/components/budget/YearOverYearIndicator';
-import { BudgetTreemap } from '@/components/budget/BudgetTreemap';
+import { BudgetPieChart } from '@/components/budget/BudgetPieChart';
 import { ComparisonCard } from '@/components/comparison/ComparisonCard';
 import { Button } from '@/components/ui/button';
 import type { BudgetItem } from '@/types/budget';
@@ -212,12 +212,12 @@ export default function BudgetDrillDownPage() {
         </div>
       )}
 
-      {/* Treemap Visualization - Children */}
+      {/* Pie Chart Visualization - Children */}
       {hasChildren && (
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Budget Breakdown</h2>
           <div className="h-[600px]">
-            <BudgetTreemap
+            <BudgetPieChart
               data={{
                 root: item,
                 departments: item.children || [],

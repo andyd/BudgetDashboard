@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '@/lib/framer-client';
 import { hierarchy, treemap as d3Treemap, type HierarchyRectangularNode } from 'd3-hierarchy';
 import type { BudgetHierarchy } from '@/types/budget';
 

@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing
+coverage/
+.nyc_output
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Logs
+logs
+*.log
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Temporary folders
+tmp/
+temp/
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Database
+*.sqlite
+*.sqlite3
+prisma/migrations/dev.db
+
+# Misc
+*.tgz
+*.tar.gz
+.cache/
+
+# Claude Code (keep agents but ignore local config)
+.claude/config.json

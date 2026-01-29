@@ -1,0 +1,1029 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Budget Dashboard Colors */
+  --color-budget-defense: var(--budget-defense);
+  --color-budget-healthcare: var(--budget-healthcare);
+  --color-budget-education: var(--budget-education);
+  --color-budget-dhs: var(--budget-dhs);
+  --color-budget-treasury: var(--budget-treasury);
+  --color-chart-positive: var(--chart-positive);
+  --color-chart-negative: var(--chart-negative);
+  --color-chart-neutral: var(--chart-neutral);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Custom spacing */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
+
+  /* Custom shadows */
+  --shadow-glow: 0 0 20px oklch(0.623 0.214 259.815 / 0.3);
+  --shadow-glow-lg: 0 0 40px oklch(0.623 0.214 259.815 / 0.4);
+
+  /* Custom easing */
+  --ease-bounce-in: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Custom animations */
+  --animate-fade-in: fade-in 0.5s ease-in-out;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out;
+  --animate-fade-in-down: fade-in-down 0.5s ease-out;
+  --animate-slide-in-left: slide-in-left 0.5s ease-out;
+  --animate-slide-in-right: slide-in-right 0.5s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-bounce-gentle: bounce-gentle 2s infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Budget Dashboard - Department Colors */
+  --budget-defense: oklch(0.577 0.245 27.325); /* Red */
+  --budget-healthcare: oklch(0.6 0.118 184.704); /* Blue */
+  --budget-education: oklch(0.627 0.265 303.9); /* Purple */
+  --budget-dhs: oklch(0.769 0.188 70.08); /* Orange */
+  --budget-treasury: oklch(0.696 0.17 162.48); /* Green */
+
+  /* Budget Dashboard - Chart States */
+  --chart-positive: oklch(0.696 0.17 162.48); /* Green for increases */
+  --chart-negative: oklch(0.577 0.245 27.325); /* Red for decreases */
+  --chart-neutral: oklch(0.556 0 0); /* Gray */
+
+  /* Budget Dashboard - Animation Timing */
+  --budget-transition-fast: 150ms;
+  --budget-transition-base: 250ms;
+  --budget-transition-slow: 400ms;
+  --budget-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --budget-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+  /* Budget Dashboard - Department Colors (Dark Mode) */
+  --budget-defense: oklch(0.704 0.191 22.216); /* Red - brighter */
+  --budget-healthcare: oklch(0.488 0.243 264.376); /* Blue - brighter */
+  --budget-education: oklch(0.627 0.265 303.9); /* Purple - same */
+  --budget-dhs: oklch(0.769 0.188 70.08); /* Orange - same */
+  --budget-treasury: oklch(0.696 0.17 162.48); /* Green - same */
+
+  /* Budget Dashboard - Chart States (Dark Mode) */
+  --chart-positive: oklch(0.696 0.17 162.48); /* Green - same */
+  --chart-negative: oklch(0.704 0.191 22.216); /* Red - brighter */
+  --chart-neutral: oklch(0.708 0 0); /* Gray - lighter */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Container utility */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  max-width: 1400px;
+}
+
+/* Keyframe animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 20px oklch(0.623 0.214 259.815 / 0.5); }
+  100% { box-shadow: 0 0 30px oklch(0.623 0.214 259.815 / 0.8); }
+}
+
+/* Background pattern utilities */
+@utility bg-grid-white {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@utility bg-grid-black {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Budget Dashboard - Treemap Styles */
+.treemap-cell {
+  transition: opacity var(--budget-transition-base) var(--budget-ease-in-out),
+              transform var(--budget-transition-base) var(--budget-ease-in-out);
+}
+
+.treemap-cell:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.treemap-cell-active {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.treemap-label {
+  font-size: clamp(0.75rem, 1vw, 1rem);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.treemap-amount {
+  font-size: clamp(0.625rem, 0.8vw, 0.875rem);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Budget Dashboard - Comparison Card Styles */
+.comparison-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--budget-transition-base) var(--budget-ease-in-out),
+              box-shadow var(--budget-transition-base) var(--budget-ease-in-out);
+}
+
+.comparison-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.comparison-card-header {
+  background: linear-gradient(135deg, var(--muted) 0%, var(--card) 100%);
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.comparison-value {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comparison-equals {
+  font-size: 1.5rem;
+  color: var(--muted-foreground);
+  margin: 0 1rem;
+}
+
+.comparison-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--muted);
+  border-radius: calc(var(--radius) - 4px);
+  transition: background var(--budget-transition-fast) var(--budget-ease-in-out);
+}
+
+.comparison-unit:hover {
+  background: var(--accent);
+}
+
+.comparison-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  font-size: 1.5rem;
+}
+
+.comparison-source {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Budget Dashboard - State Indicators */
+.state-positive {
+  color: var(--chart-positive);
+}
+
+.state-negative {
+  color: var(--chart-negative);
+}
+
+.state-neutral {
+  color: var(--chart-neutral);
+}
+
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.state-badge-positive {
+  background: oklch(0.696 0.17 162.48 / 0.1);
+  color: var(--chart-positive);
+}
+
+.state-badge-negative {
+  background: oklch(0.577 0.245 27.325 / 0.1);
+  color: var(--chart-negative);
+}
+
+.state-badge-neutral {
+  background: oklch(0.556 0 0 / 0.1);
+  color: var(--chart-neutral);
+}
+
+/* ============================================================================
+ * Accessibility Utilities
+ * ============================================================================ */
+
+/**
+ * Screen reader only content
+ * Hides content visually while keeping it accessible to assistive technologies
+ *
+ * Based on Bootstrap's .sr-only and a11y-project recommendations:
+ * https://www.a11yproject.com/posts/how-to-hide-content/
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * Screen reader only content that becomes visible on focus
+ * Useful for skip navigation links and keyboard-only interactions
+ */
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/**
+ * Focus visible styles for keyboard navigation
+ * Provides clear focus indicators that only appear for keyboard users
+ */
+.focus-visible-only:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/**
+ * Skip link styles
+ * Positioned absolutely and revealed on focus for keyboard navigation
+ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 9999;
+  padding: 1rem 1.5rem;
+  background: var(--background);
+  color: var(--foreground);
+  text-decoration: none;
+  border: 2px solid var(--ring);
+  border-radius: var(--radius);
+  transition: top var(--budget-transition-fast) var(--budget-ease-in-out);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/**
+ * Reduced motion utility
+ * Respects user's prefers-reduced-motion setting
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/**
+ * High contrast mode support
+ * Ensures borders are visible in Windows High Contrast Mode
+ */
+@media (prefers-contrast: high) {
+  .treemap-cell,
+  .comparison-card,
+  .state-badge {
+    outline: 1px solid currentColor;
+  }
+}
+
+/**
+ * Focus within styles for interactive containers
+ * Provides visual feedback when child elements receive focus
+ */
+.focus-within-ring:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Print Styles
+   Professional printed output optimized for B&W printing
+   ============================================ */
+
+@media print {
+  /* Page setup */
+  @page {
+    margin: 0.75in 0.5in;
+    size: letter portrait;
+  }
+
+  /* Reset colors for B&W printing */
+  :root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0 0 0);
+    --border: oklch(0.5 0 0);
+    --muted: oklch(0.95 0 0);
+    --muted-foreground: oklch(0.3 0 0);
+  }
+
+  /* Global print optimizations */
+  * {
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Hide interactive elements */
+  nav,
+  header[role="banner"],
+  [role="navigation"],
+  button:not(.print-keep),
+  input,
+  textarea,
+  select,
+  .search-bar,
+  .filter-controls,
+  .interactive-only,
+  [data-print-hide],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide navigation and sidebar */
+  aside,
+  .sidebar,
+  [data-sidebar],
+  .breadcrumb-nav {
+    display: none !important;
+  }
+
+  /* Remove shadows and animations */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Remove background patterns */
+  .bg-grid-white,
+  .bg-grid-black {
+    background-image: none !important;
+  }
+
+  /* Typography optimizations */
+  h1 {
+    font-size: 20pt;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 16pt;
+    font-weight: 600;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: 600;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-bottom: 8pt;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Page break controls */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* Comparison cards */
+  .comparison-card,
+  [data-comparison-card] {
+    page-break-inside: avoid;
+    margin-bottom: 16pt;
+    padding: 12pt;
+    border: 1pt solid #000;
+    background: white !important;
+  }
+
+  /* Comparison grid layout for print */
+  .comparison-grid,
+  [data-comparison-grid] {
+    display: block !important;
+  }
+
+  .comparison-grid > * {
+    margin-bottom: 12pt;
+    page-break-inside: avoid;
+  }
+
+  /* Source URLs - make visible in print */
+  .comparison-source::after,
+  [data-source-url]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    font-weight: normal;
+  }
+
+  /* Don't show URLs for internal links */
+  a[href^="#"]::after,
+  a[href^="/"]::after {
+    content: none;
+  }
+
+  /* Treemap visualization - convert to table */
+  .treemap-container,
+  [data-treemap] {
+    display: none !important;
+  }
+
+  /* Show print-friendly table alternative */
+  .treemap-print-table,
+  [data-treemap-print] {
+    display: table !important;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16pt;
+  }
+
+  .treemap-print-table thead {
+    border-bottom: 2pt solid #000;
+  }
+
+  .treemap-print-table th {
+    text-align: left;
+    padding: 8pt 4pt;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+
+  .treemap-print-table td {
+    padding: 6pt 4pt;
+    border-bottom: 0.5pt solid #ccc;
+    font-size: 10pt;
+  }
+
+  .treemap-print-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Spotlight panels */
+  .spotlight-panel,
+  [data-spotlight] {
+    page-break-inside: avoid;
+    margin-bottom: 12pt;
+    padding: 12pt;
+    border: 1pt solid #000;
+    background: #f9f9f9 !important;
+  }
+
+  /* Charts and visualizations */
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  canvas {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* Data tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16pt;
+    font-size: 10pt;
+  }
+
+  thead {
+    display: table-header-group;
+    font-weight: 600;
+  }
+
+  tbody {
+    display: table-row-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  th,
+  td {
+    padding: 6pt 8pt;
+    text-align: left;
+    border: 0.5pt solid #ccc;
+  }
+
+  th {
+    background: #f0f0f0 !important;
+    font-weight: 600;
+  }
+
+  /* Financial numbers - keep formatting */
+  .currency,
+  [data-currency],
+  .number-large {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  /* Page header for each page */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    margin-bottom: 12pt;
+    padding-bottom: 6pt;
+    border-bottom: 0.5pt solid #ccc;
+  }
+
+  /* Page footer */
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 8pt;
+    color: #666;
+    padding-top: 6pt;
+    border-top: 0.5pt solid #ccc;
+  }
+
+  /* Print timestamp */
+  .print-timestamp::after {
+    content: "Printed: " attr(data-timestamp);
+    font-size: 8pt;
+    color: #666;
+  }
+
+  /* Comparison builder - hide in print */
+  .comparison-builder,
+  [data-comparison-builder] {
+    display: none !important;
+  }
+
+  /* Featured carousel - show as list */
+  .carousel,
+  [data-carousel] {
+    display: block !important;
+  }
+
+  .carousel-item {
+    display: block !important;
+    page-break-inside: avoid;
+    margin-bottom: 12pt;
+  }
+
+  /* Hide carousel controls */
+  .carousel-controls,
+  .carousel-dots,
+  [data-carousel-prev],
+  [data-carousel-next] {
+    display: none !important;
+  }
+
+  /* Share buttons */
+  .share-button,
+  [data-share-button] {
+    display: none !important;
+  }
+
+  /* Breadcrumb - simplify */
+  .breadcrumb {
+    display: block;
+    font-size: 9pt;
+    margin-bottom: 8pt;
+    color: #666;
+  }
+
+  .breadcrumb-separator::after {
+    content: " > ";
+    margin: 0 4pt;
+  }
+
+  /* Admin interface elements */
+  .admin-only,
+  [data-admin],
+  .edit-button,
+  .delete-button {
+    display: none !important;
+  }
+
+  /* Tooltips and popovers */
+  [role="tooltip"],
+  .tooltip,
+  .popover {
+    display: none !important;
+  }
+
+  /* Modal and dialog content */
+  [role="dialog"],
+  .modal {
+    position: static !important;
+    display: block !important;
+    page-break-inside: avoid;
+  }
+
+  /* Remove overlay backgrounds */
+  .overlay,
+  .backdrop {
+    display: none !important;
+  }
+
+  /* Ensure main content is visible */
+  main,
+  [role="main"] {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Cards and panels */
+  .card {
+    border: 1pt solid #000;
+    padding: 12pt;
+    margin-bottom: 12pt;
+    page-break-inside: avoid;
+    background: white !important;
+  }
+
+  /* Remove card hover states */
+  .card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure text is readable */
+  .text-muted,
+  .text-secondary {
+    color: #555 !important;
+  }
+
+  /* Preserve important colored text */
+  .text-destructive,
+  .text-red-600 {
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  .text-primary,
+  .text-blue-600 {
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    margin-bottom: 12pt;
+    padding-left: 24pt;
+  }
+
+  li {
+    margin-bottom: 4pt;
+  }
+
+  /* Code blocks - if any */
+  code,
+  pre {
+    font-family: monospace;
+    font-size: 9pt;
+    background: #f5f5f5 !important;
+    border: 0.5pt solid #ccc;
+    padding: 2pt 4pt;
+  }
+
+  pre {
+    padding: 8pt;
+    overflow: visible;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Print-only utilities */
+  .print-only {
+    display: block !important;
+  }
+
+  .screen-only {
+    display: none !important;
+  }
+
+  /* Compact mode for dense data */
+  .print-compact * {
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4pt !important;
+  }
+
+  /* Emphasize important data points */
+  .print-highlight {
+    font-weight: 700 !important;
+    font-size: 110% !important;
+  }
+
+  /* Page numbering */
+  .page-number::after {
+    content: counter(page);
+  }
+
+  /* Section breaks */
+  .section-break {
+    margin: 24pt 0;
+    page-break-after: always;
+  }
+
+  /* Budget drill-down hierarchy */
+  .budget-hierarchy {
+    margin-left: 0;
+  }
+
+  .budget-level-1 {
+    margin-left: 0;
+  }
+
+  .budget-level-2 {
+    margin-left: 12pt;
+  }
+
+  .budget-level-3 {
+    margin-left: 24pt;
+  }
+
+  .budget-level-4 {
+    margin-left: 36pt;
+  }
+
+  /* Comparison side-by-side layout */
+  .comparison-sidebyside {
+    display: flex;
+    justify-content: space-between;
+    gap: 12pt;
+  }
+
+  .comparison-left,
+  .comparison-right {
+    flex: 1;
+    page-break-inside: avoid;
+  }
+
+  /* Add visual separator for comparisons */
+  .comparison-vs::before {
+    content: "versus";
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 10pt;
+    margin: 8pt 0;
+    color: #666;
+  }
+
+  /* Attribution footer */
+  .data-source {
+    margin-top: 16pt;
+    padding-top: 8pt;
+    border-top: 0.5pt solid #ccc;
+    font-size: 8pt;
+    color: #666;
+  }
+
+  .data-source::before {
+    content: "Data source: ";
+    font-weight: 600;
+  }
+}

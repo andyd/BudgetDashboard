@@ -10,7 +10,8 @@ import { ComparisonCard } from '@/components/comparison/ComparisonCard';
 import { Button } from '@/components/ui/button';
 import type { BudgetItem } from '@/types/budget';
 import { formatCurrency, formatCompact } from '@/lib/format';
-import { calculateUnitEquivalent, COMPARISON_UNITS } from '@/lib/mock-data/units';
+import { mockUnits } from '@/lib/mock-data/units';
+import { convertBudgetToUnits } from '@/lib/unit-converter';
 
 interface PageProps {
   params: Promise<{
@@ -146,9 +147,9 @@ export default async function BudgetDrillDownPage(props: PageProps) {
       : '/';
 
   // Find a relevant comparison unit
-  const relevantUnit = COMPARISON_UNITS.find((u) => u.category === 'salary');
-  const comparisonCount = relevantUnit
-    ? calculateUnitEquivalent(item.amount, relevantUnit.id)
+  const relevantUnit = mockUnits.find((u) => u.category === 'everyday');
+  const comparisonResult = relevantUnit
+    ? convertBudgetToUnits(item.amount, relevantUnit)
     : null;
 
   return (
@@ -209,13 +210,13 @@ export default async function BudgetDrillDownPage(props: PageProps) {
       )}
 
       {/* Comparison Card - Contextual Reference */}
-      {relevantUnit && comparisonCount && (
+      {relevantUnit && comparisonResult && (
         <div className="mb-8">
           <ComparisonCard
             budgetAmount={item.amount}
-            unitCount={comparisonCount}
+            unitCount={comparisonResult.unitCount}
             unit={relevantUnit}
-            headline={`${item.name} costs more than ${formatCompact(comparisonCount)} ${comparisonCount === 1 ? relevantUnit.name : relevantUnit.name}s`}
+            headline={`${item.name} = ${formatCompact(comparisonResult.unitCount)} ${comparisonResult.unitCount === 1 ? relevantUnit.nameSingular : relevantUnit.name}`}
           />
         </div>
       )}

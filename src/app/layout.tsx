@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Federal Budget Dashboard - See Where Your Tax Dollars Go',
-    template: '%s | Federal Budget Dashboard',
+    default: 'USA Government Budget - See Where Your Tax Dollars Go',
+    template: '%s | USA Government Budget',
   },
   description:
     'Explore US federal spending with interactive visualizations and real-world comparisons. Understand where billions of tax dollars go through tangible side-by-side comparisons that make the numbers meaningful.',
@@ -48,22 +48,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    title: 'Federal Budget Dashboard - See Where Your Tax Dollars Go',
+    title: 'USA Government Budget - See Where Your Tax Dollars Go',
     description:
       'Explore US federal spending with interactive visualizations and real-world comparisons. Understand billions through tangible side-by-side comparisons.',
-    siteName: 'Federal Budget Dashboard',
+    siteName: 'USA Government Budget',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Federal Budget Dashboard - Interactive spending visualization',
+        alt: 'USA Government Budget - Interactive spending visualization',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Federal Budget Dashboard - See Where Your Tax Dollars Go',
+    title: 'USA Government Budget - See Where Your Tax Dollars Go',
     description:
       'Explore US federal spending with interactive visualizations and real-world comparisons. Understand billions through tangible side-by-side comparisons.',
     images: ['/og-image.png'],

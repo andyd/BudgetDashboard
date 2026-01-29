@@ -28,7 +28,7 @@ export function Header() {
               href="/"
               className="text-lg sm:text-xl font-bold text-foreground hover:text-foreground/90 transition-colors"
             >
-              Budget Dashboard
+              USA Government Budget
             </Link>
           </div>
 
@@ -68,7 +68,7 @@ export function Header() {
                       className="text-lg font-bold text-foreground"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Budget Dashboard
+                      USA Government Budget
                     </Link>
                   </div>
 

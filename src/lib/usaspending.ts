@@ -18,9 +18,6 @@
 import type {
   Agency,
   BudgetItem,
-  Department,
-  Program,
-  LineItem,
 } from '@/types/budget';
 
 // ============================================================================
@@ -230,9 +227,11 @@ class RateLimiter {
 
     if (this.requests.length >= this.maxRequests) {
       const oldestRequest = this.requests[0];
-      const waitTime = 60000 - (now - oldestRequest);
-      await new Promise((resolve) => setTimeout(resolve, waitTime));
-      return this.checkLimit();
+      if (oldestRequest) {
+        const waitTime = 60000 - (now - oldestRequest);
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+        return this.checkLimit();
+      }
     }
 
     this.requests.push(now);
@@ -330,7 +329,7 @@ export class USASpendingClient {
    * Get all federal agencies
    * @returns Array of agencies with spending data
    */
-  async getAgencies(fiscalYear?: number): Promise<Agency[]> {
+  async getAgencies(_fiscalYear?: number): Promise<Agency[]> {
     // TODO: Implement actual API call to /agency/
     // Endpoint: GET /agency/
     // Query params: fiscal_year (optional)
@@ -377,7 +376,7 @@ export class USASpendingClient {
    * Get all budget functions
    * @returns Array of budget functions with spending totals
    */
-  async getBudgetFunctions(fiscalYear?: number): Promise<BudgetFunctionData[]> {
+  async getBudgetFunctions(_fiscalYear?: number): Promise<BudgetFunctionData[]> {
     // TODO: Implement actual API call to /budget_functions/
     // Endpoint: GET /budget_functions/federal_account/
     // Query params: fiscal_year (optional)
@@ -394,7 +393,7 @@ export class USASpendingClient {
    * Get all object classes (spending categories)
    * @returns Array of object classes with spending totals
    */
-  async getObjectClasses(fiscalYear?: number): Promise<ObjectClassData[]> {
+  async getObjectClasses(_fiscalYear?: number): Promise<ObjectClassData[]> {
     // TODO: Implement actual API call to /object_class/
     // Endpoint: GET /object_class/
     // Query params: fiscal_year (optional)
@@ -410,7 +409,7 @@ export class USASpendingClient {
    * @param searchTerm - Search query
    * @returns Array of matching budget items
    */
-  async searchBudgetItems(searchTerm: string): Promise<BudgetItem[]> {
+  async searchBudgetItems(_searchTerm: string): Promise<BudgetItem[]> {
     // TODO: Implement actual API call to /search/
     // Endpoint: POST /search/
     // Body: { "query": searchTerm }
@@ -431,9 +430,9 @@ export class USASpendingClient {
    * @returns Time series spending data
    */
   async getSpendingTrends(
-    entityId: string,
-    startYear: number,
-    endYear: number
+    _entityId: string,
+    _startYear: number,
+    _endYear: number
   ): Promise<Array<{ year: number; amount: number }>> {
     // TODO: Implement actual API call to get historical data
     // May require multiple requests for different fiscal years
@@ -484,7 +483,7 @@ export class USASpendingClient {
  */
 function transformAgencyToAppFormat(
   apiAgency: USASpendingAgencyResponse,
-  parentId: string | null = null
+  _parentId: string | null = null
 ): Agency {
   // TODO: Implement actual transformation logic
   // Map API fields to our Agency interface
@@ -495,7 +494,7 @@ function transformAgencyToAppFormat(
     id: apiAgency.toptier_code,
     name: apiAgency.agency_name,
     amount: apiAgency.current_total_budget_authority_amount,
-    parentId,
+    parentId: _parentId,
     fiscalYear: apiAgency.fiscal_year,
     percentOfParent: null, // Calculate based on parent
     yearOverYearChange: null, // Calculate based on historical data
@@ -511,15 +510,15 @@ function transformAgencyToAppFormat(
  * Transform USAspending budget function to our app's format
  */
 function transformBudgetFunction(
-  apiFunction: USASpendingBudgetFunctionResponse
+  _apiFunction: USASpendingBudgetFunctionResponse
 ): BudgetFunctionData {
   // TODO: Implement transformation
   return {
-    id: apiFunction.budget_function_code,
-    name: apiFunction.budget_function,
-    code: apiFunction.budget_function_code,
-    amount: apiFunction.obligated_amount,
-    fiscalYear: apiFunction.fiscal_year,
+    id: _apiFunction.budget_function_code,
+    name: _apiFunction.budget_function,
+    code: _apiFunction.budget_function_code,
+    amount: _apiFunction.obligated_amount,
+    fiscalYear: _apiFunction.fiscal_year,
   };
 }
 
@@ -527,14 +526,14 @@ function transformBudgetFunction(
  * Transform USAspending object class to our app's format
  */
 function transformObjectClass(
-  apiObjectClass: USASpendingObjectClassResponse
+  _apiObjectClass: USASpendingObjectClassResponse
 ): ObjectClassData {
   // TODO: Implement transformation
   return {
-    id: String(apiObjectClass.id),
-    name: apiObjectClass.object_class_name,
-    code: apiObjectClass.object_class,
-    amount: apiObjectClass.obligated_amount,
+    id: String(_apiObjectClass.id),
+    name: _apiObjectClass.object_class_name,
+    code: _apiObjectClass.object_class,
+    amount: _apiObjectClass.obligated_amount,
   };
 }
 

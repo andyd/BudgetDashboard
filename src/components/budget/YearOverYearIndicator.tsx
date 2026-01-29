@@ -44,7 +44,6 @@ export function YearOverYearIndicator({
   // Determine change type
   const isNeutral = Math.abs(change) < 1;
   const isIncrease = change >= 1;
-  const isDecrease = change <= -1;
 
   // Format percentage display
   const percentageDisplay = `${change >= 0 ? "+" : ""}${change.toFixed(1)}%`;

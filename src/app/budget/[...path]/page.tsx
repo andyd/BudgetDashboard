@@ -22,7 +22,7 @@ interface BudgetData {
     title: string;
     description: string;
     sources: Array<{ label: string; url: string }>;
-  };
+  } | undefined;
 }
 
 /**
@@ -82,6 +82,10 @@ function getBudgetItemByPath(path: string[]): BudgetData | null {
   };
 
   const key = path[0];
+  if (!key) {
+    return null;
+  }
+
   const data = mockData[key];
 
   if (!data) {
@@ -128,7 +132,7 @@ export default function BudgetDrillDownPage() {
       : '/';
 
   const relevantUnit = mockUnits.find((u) => u.category === 'everyday');
-  const comparisonResult = relevantUnit
+  const unitCount = relevantUnit
     ? convertBudgetToUnits(item.amount, relevantUnit)
     : null;
 
@@ -201,13 +205,13 @@ export default function BudgetDrillDownPage() {
       )}
 
       {/* Comparison Card - Contextual Reference */}
-      {relevantUnit && comparisonResult && (
+      {relevantUnit && unitCount !== null && (
         <div className="mb-8">
           <ComparisonCard
             budgetAmount={item.amount}
-            unitCount={comparisonResult.unitCount}
+            unitCount={unitCount}
             unit={relevantUnit}
-            headline={`${item.name} = ${formatCompact(comparisonResult.unitCount)} ${comparisonResult.unitCount === 1 ? relevantUnit.nameSingular : relevantUnit.name}`}
+            headline={`${item.name} = ${formatCompact(unitCount)} ${unitCount === 1 ? relevantUnit.nameSingular : relevantUnit.name}`}
           />
         </div>
       )}
@@ -220,7 +224,10 @@ export default function BudgetDrillDownPage() {
             <BudgetPieChart
               data={{
                 root: item,
-                departments: item.children || [],
+                departments: (item.children || []).map(child => ({
+                  ...child,
+                  agencies: [] // Children at this level don't have agencies
+                })),
                 totalAmount: item.amount,
                 fiscalYear: item.fiscalYear,
               }}

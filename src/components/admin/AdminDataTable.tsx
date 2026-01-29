@@ -7,7 +7,6 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  GripVertical,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -199,7 +198,6 @@ export function AdminDataTable<T extends { id: string | number }>({
   data,
   onEdit,
   onDelete,
-  onReorder,
   isLoading = false,
   emptyMessage,
   emptyDescription,

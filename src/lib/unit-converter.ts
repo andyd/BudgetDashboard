@@ -106,15 +106,19 @@ export function convertBudgetToUnits(
  * Normalizes unit cost to annual basis for consistent comparison
  */
 function normalizeUnitCostToYear(unit: Unit): number {
-  switch (unit.period) {
+  const cost = unit.cost ?? unit.costPerUnit;
+  const period = unit.period ?? 'unit';
+
+  switch (period) {
     case 'year':
-      return unit.cost;
+      return cost;
     case 'month':
-      return unit.cost * 12;
+      return cost * 12;
     case 'day':
-      return unit.cost * 365;
+      return cost * 365;
     case 'unit':
-      return unit.cost;
+    default:
+      return cost;
   }
 }
 

@@ -50,7 +50,7 @@ export function AdminSidebar() {
         toast.success('Signed out successfully');
         router.refresh();
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Sign out failed');
     }
   }

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { MainLayout } from '@/components/layout/main-layout';
 import { HomePageClient } from '@/components/home/HomePageClient';
 import type { BudgetHierarchy, BudgetItem } from '@/types/budget';
 import type { FeaturedComparison } from '@/types/comparison';
@@ -262,14 +261,12 @@ export default function HomePage() {
   const lastUpdated = new Date('2026-01-15');
 
   return (
-    <MainLayout>
-      <HomePageClient
-        budgetData={sampleBudgetData}
-        budgetItems={sampleBudgetItems}
-        featuredComparisons={sampleFeaturedComparisons}
-        currentFiscalYear={currentFiscalYear}
-        lastUpdated={lastUpdated}
-      />
-    </MainLayout>
+    <HomePageClient
+      budgetData={sampleBudgetData}
+      budgetItems={sampleBudgetItems}
+      featuredComparisons={sampleFeaturedComparisons}
+      currentFiscalYear={currentFiscalYear}
+      lastUpdated={lastUpdated}
+    />
   );
 }

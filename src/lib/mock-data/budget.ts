@@ -1,4 +1,4 @@
-import type { BudgetCategory } from '../types/budget';
+import type { BudgetCategory } from '@/types/budget';
 
 /**
  * Mock Federal Budget Data for FY 2025

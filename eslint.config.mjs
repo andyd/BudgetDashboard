@@ -18,6 +18,12 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "DISABLED_CODE/**",
+      "docs/**",
+      "skills/**",
+      "**/*.disabled/**",
+      "**/admin.disabled/**",
+      "**/_api-disabled/**",
     ],
   },
 ];

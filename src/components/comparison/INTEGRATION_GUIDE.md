@@ -282,5 +282,5 @@ After integrating:
 For issues or questions:
 
 - Check ShareModal.README.md for detailed documentation
-- Review ShareModal.example.tsx for usage patterns
+- Review docs/component-examples/ShareModal.example.tsx for usage patterns
 - Check component source in ShareModal.tsx

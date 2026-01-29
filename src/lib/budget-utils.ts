@@ -1,13 +1,18 @@
 import type { BudgetItem, BudgetHierarchy } from '@/types/budget';
 
 /**
+ * Budget item with children for hierarchical tree structure
+ */
+type BudgetItemWithChildren = BudgetItem & { children: BudgetItemWithChildren[] };
+
+/**
  * Build a hierarchical tree structure from flat budget items
  * @param flatItems - Array of flat budget items with parentId references
  * @returns Hierarchical budget structure with nested children
  */
 export function buildHierarchy(flatItems: BudgetItem[]): BudgetHierarchy {
-  const itemMap = new Map<string, BudgetItem & { children: BudgetItem[] }>();
-  const rootItems: (BudgetItem & { children: BudgetItem[] })[] = [];
+  const itemMap = new Map<string, BudgetItemWithChildren>();
+  const rootItems: BudgetItemWithChildren[] = [];
 
   // First pass: create map of all items with children arrays
   flatItems.forEach(item => {
@@ -52,13 +57,13 @@ export function findItemByPath(
 ): BudgetItem | null {
   if (path.length === 0) return null;
 
-  let currentItems = hierarchy.items;
-  let found: BudgetItem | null = null;
+  let currentItems: BudgetItemWithChildren[] = hierarchy.items;
+  let found: BudgetItemWithChildren | null = null;
 
   for (const id of path) {
     found = currentItems.find(item => item.id === id) || null;
     if (!found) return null;
-    currentItems = (found as any).children || [];
+    currentItems = found.children || [];
   }
 
   return found;

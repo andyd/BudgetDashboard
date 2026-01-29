@@ -284,6 +284,6 @@ Potential features to add:
 
 ## See Also
 
-- [Examples](./AdminDataTable.example.tsx) - Complete usage examples
+- [Examples](../../../docs/component-examples/AdminDataTable.example.tsx) - Complete usage examples
 - [shadcn/ui Table](https://ui.shadcn.com/docs/components/table) - Base table component
 - [shadcn/ui Dropdown Menu](https://ui.shadcn.com/docs/components/dropdown-menu) - Actions menu

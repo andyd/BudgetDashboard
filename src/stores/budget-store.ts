@@ -107,7 +107,7 @@ export const useBudgetStore = create<BudgetState>()(
 
       // Actions
       setBudgetData: (data) => {
-        const state = get();
+        const _state = get();
         const urlPath = getPathFromUrl();
 
         // Validate URL path against new data

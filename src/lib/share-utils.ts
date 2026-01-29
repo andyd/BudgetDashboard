@@ -203,9 +203,15 @@ export function getLinkedInShareUrl(url: string, title?: string): string {
  * // Returns: true (if successful)
  */
 export async function copyToClipboard(text: string): Promise<boolean> {
+  // Server-side or non-browser environment
+  if (typeof window === 'undefined' || typeof navigator === 'undefined' || typeof document === 'undefined') {
+    console.warn('Clipboard API not available in this environment');
+    return false;
+  }
+
   try {
     // Modern Clipboard API (preferred)
-    if (navigator.clipboard && window.isSecureContext) {
+    if (typeof navigator.clipboard !== 'undefined' && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
       return true;
     }

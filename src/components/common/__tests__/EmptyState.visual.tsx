@@ -165,7 +165,7 @@ export function EmptyStateShowcase() {
             description is text-sm
           </p>
           <p>
-            <strong>Actions:</strong> Optional action buttons use size="sm" for
+            <strong>Actions:</strong> Optional action buttons use small size for
             proportional scaling
           </p>
         </CardContent>

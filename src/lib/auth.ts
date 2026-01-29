@@ -20,6 +20,10 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 
+if (!db) {
+  throw new Error("Database connection not available. Please set DATABASE_URL in .env.local");
+}
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",

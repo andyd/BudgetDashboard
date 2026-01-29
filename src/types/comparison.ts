@@ -17,17 +17,29 @@ export interface ComparisonUnit {
   /** Singular form of the name */
   nameSingular: string;
 
+  /** Plural form of the name */
+  pluralName?: string;
+
   /** Cost per unit in dollars */
   costPerUnit: number;
 
+  /** Alternative cost property name */
+  cost?: number;
+
+  /** Time period for recurring costs */
+  period?: 'year' | 'month' | 'day' | 'unit';
+
   /** Category for grouping units */
-  category: 'infrastructure' | 'everyday' | 'vehicles' | 'buildings' | 'misc';
+  category: 'infrastructure' | 'everyday' | 'vehicles' | 'buildings' | 'misc' | 'food' | 'entertainment' | 'products' | 'transportation' | 'salary' | 'healthcare' | 'education' | 'general';
 
   /** Short description */
   description?: string;
 
   /** Icon name or emoji */
   icon?: string;
+
+  /** Source attribution */
+  source?: string;
 }
 
 /**
@@ -45,6 +57,15 @@ export interface ComparisonResult {
 
   /** Original dollar amount */
   dollarAmount: number;
+
+  /** Budget item name (legacy) */
+  budgetItemName?: string;
+
+  /** Unit name (legacy) */
+  unitName?: string;
+
+  /** Formatted string (legacy) */
+  formattedString?: string;
 }
 
 /**
@@ -89,6 +110,21 @@ export interface FeaturedComparison {
 
   /** Last update timestamp */
   updatedAt: Date;
+
+  /** Alternative unit ID field (legacy) */
+  unitId?: string;
+
+  /** Unit name (legacy) */
+  unitName?: string;
+
+  /** Unit cost (legacy) */
+  unitCost?: number;
+
+  /** Formula string (legacy) */
+  formula?: string;
+
+  /** Display order (legacy) */
+  displayOrder?: number;
 }
 
 /**

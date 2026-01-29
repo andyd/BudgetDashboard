@@ -193,7 +193,7 @@ export function BudgetSearch() {
           >
             {results.length === 0 && debouncedTerm && (
               <div className="px-4 py-3 text-sm text-muted-foreground">
-                No results found for "{debouncedTerm}"
+                No results found for &quot;{debouncedTerm}&quot;
               </div>
             )}
 

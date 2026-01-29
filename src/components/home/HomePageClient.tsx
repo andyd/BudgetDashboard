@@ -35,13 +35,6 @@ export function HomePageClient({
     console.log('Hovering budget item:', itemId);
   };
 
-  const handleShare = (comparison: FeaturedComparison) => {
-    // Generate share URL and show share dialog
-    const shareUrl = `${window.location.origin}/compare/${comparison.id}`;
-    navigator.clipboard.writeText(shareUrl);
-    console.log('Copied share URL:', shareUrl);
-  };
-
   const handleBuilderShare = (budgetItemId: string, unitId: string) => {
     const shareUrl = `${window.location.origin}/compare/custom?budget=${budgetItemId}&unit=${unitId}`;
     navigator.clipboard.writeText(shareUrl);
@@ -50,9 +43,9 @@ export function HomePageClient({
 
   return (
     <>
-      {/* Hero Header Section */}
-      <section className="border-b bg-gradient-to-b from-background to-muted/30">
-        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      {/* Hero Section */}
+      <section className="bg-muted/10">
+        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="mb-2 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">

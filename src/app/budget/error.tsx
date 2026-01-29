@@ -37,7 +37,7 @@ export default function BudgetError({
               Unable to Load Budget Data
             </CardTitle>
             <CardDescription className="text-base">
-              We're having trouble loading the federal budget information right
+              We&apos;re having trouble loading the federal budget information right
               now.
             </CardDescription>
           </CardHeader>
@@ -62,7 +62,7 @@ export default function BudgetError({
               <ul className="list-disc space-y-1 pl-5">
                 <li>The budget data service is temporarily unavailable</li>
                 <li>Your internet connection was interrupted</li>
-                <li>The requested budget category doesn't exist</li>
+                <li>The requested budget category doesn&apos;t exist</li>
               </ul>
             </div>
             <div className="rounded-lg border bg-muted/50 p-4">

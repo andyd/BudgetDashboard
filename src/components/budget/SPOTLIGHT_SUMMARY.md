@@ -12,7 +12,7 @@
    - Barrel export for clean imports
    - Exports both component and types
 
-3. **`/Users/andyd/code/1-Web-Apps/BudgetDashboard/src/components/budget/SpotlightPanel.example.tsx`**
+3. **`/Users/andyd/code/1-Web-Apps/BudgetDashboard/docs/component-examples/SpotlightPanel.example.tsx`**
    - Example usage with real-world budget items
    - Shows F-35, SSA, and NASA examples
 

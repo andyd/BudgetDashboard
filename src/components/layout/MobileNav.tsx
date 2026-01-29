@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Home, Search, BarChart3, Plus, Info } from "lucide-react";
+import { Menu, Home, Search, BarChart3, Plus, Info } from "lucide-react";
 import {
   Sheet,
   SheetContent,

@@ -5,7 +5,7 @@
  * to ensure the budget data visualizations are accessible to all users.
  */
 
-import type { BudgetItem, Department, Agency, Program, LineItem } from '@/types/budget';
+import type { BudgetItem } from '@/types/budget';
 
 // ============================================================================
 // Constants
@@ -52,13 +52,6 @@ export const BUDGET_TYPE_LABELS = {
   root: 'Total Federal Budget',
 } as const;
 
-/**
- * Currency formatting options for screen readers
- */
-const CURRENCY_SR_OPTIONS = {
-  abbreviated: true,  // Use "billion" instead of listing all zeros
-  includeSign: true,  // Include "dollars" suffix
-} as const;
 
 // ============================================================================
 // Formatting Functions

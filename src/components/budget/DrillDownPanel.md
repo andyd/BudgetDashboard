@@ -152,4 +152,4 @@ This component is designed to work with:
 
 ## Testing
 
-See `DrillDownPanel.example.tsx` for interactive examples and usage patterns.
+See `docs/component-examples/DrillDownPanel.example.tsx` for interactive examples and usage patterns.

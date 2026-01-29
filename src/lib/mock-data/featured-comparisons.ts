@@ -7,13 +7,23 @@
  * All calculations are based on realistic 2024-2025 federal budget data.
  */
 
-import type { FeaturedComparison } from '@/types/comparison';
-
 /**
  * Featured comparisons with curated headlines
  * These will be displayed prominently on the dashboard
  */
-export const FEATURED_COMPARISONS: Omit<FeaturedComparison, 'id' | 'createdAt'>[] = [
+// Temporary simplified structure for mock data
+// This will be replaced with proper database queries in production
+export interface SimpleFeaturedComparison {
+  budgetItemId: string;
+  budgetAmount: number;
+  unitId: string;
+  unitCount: number;
+  headline: string;
+  isFeatured: boolean;
+  displayOrder: number;
+}
+
+export const FEATURED_COMPARISONS: SimpleFeaturedComparison[] = [
   {
     // ICE detention daily costs: ~$210/day per detainee × 35,000 detainees = $7.35M/day
     // Annual: $2.68B
@@ -121,20 +131,22 @@ export const FEATURED_COMPARISON_CONTEXT = {
 /**
  * Helper function to get featured comparisons sorted by display order
  */
-export function getFeaturedComparisons(): typeof FEATURED_COMPARISONS {
+export function getFeaturedComparisons(): SimpleFeaturedComparison[] {
   return [...FEATURED_COMPARISONS].sort((a, b) => a.displayOrder - b.displayOrder);
 }
 
 /**
  * Helper function to get a random featured comparison
  */
-export function getRandomFeaturedComparison(): (typeof FEATURED_COMPARISONS)[0] {
-  return FEATURED_COMPARISONS[Math.floor(Math.random() * FEATURED_COMPARISONS.length)];
+export function getRandomFeaturedComparison(): SimpleFeaturedComparison {
+  const index = Math.floor(Math.random() * FEATURED_COMPARISONS.length);
+  // Array is always populated with at least one comparison
+  return FEATURED_COMPARISONS[index]!;
 }
 
 /**
  * Helper function to get featured comparisons by budget item ID
  */
-export function getFeaturedComparisonsByBudgetItem(budgetItemId: string): typeof FEATURED_COMPARISONS {
+export function getFeaturedComparisonsByBudgetItem(budgetItemId: string): SimpleFeaturedComparison[] {
   return FEATURED_COMPARISONS.filter(comp => comp.budgetItemId === budgetItemId);
 }

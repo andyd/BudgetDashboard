@@ -16,5 +16,4 @@ export {
   type Variants,
   type Transition,
   type MotionProps,
-  type AnimationProps,
 } from 'framer-motion';

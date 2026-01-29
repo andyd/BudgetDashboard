@@ -82,8 +82,18 @@ function validateEnv() {
   };
 }
 
-// Validate on module load
-const { server: serverEnv, client: clientEnv } = validateEnv();
+// Lazy initialization to avoid issues during build
+let _serverEnv: z.infer<typeof serverSchema> | null = null;
+let _clientEnv: z.infer<typeof clientSchema> | null = null;
+
+function getEnv() {
+  if (!_clientEnv) {
+    const validated = validateEnv();
+    _serverEnv = validated.server;
+    _clientEnv = validated.client;
+  }
+  return { server: _serverEnv, client: _clientEnv };
+}
 
 /**
  * Type-safe server environment variables
@@ -95,10 +105,18 @@ const { server: serverEnv, client: clientEnv } = validateEnv();
  * const dbUrl = env.DATABASE_URL;
  * ```
  */
-export const env = serverEnv ? {
-  ...serverEnv,
-  ...clientEnv,
-} : clientEnv;
+export const env = new Proxy({} as ServerEnv & ClientEnv, {
+  get(_target, prop) {
+    const { server, client } = getEnv();
+    if (server && prop in server) {
+      return server[prop as keyof ServerEnv];
+    }
+    if (client && prop in client) {
+      return client[prop as keyof ClientEnv];
+    }
+    return undefined;
+  },
+});
 
 /**
  * Type-safe client environment variables
@@ -110,22 +128,36 @@ export const env = serverEnv ? {
  * const year = publicEnv.NEXT_PUBLIC_FISCAL_YEAR;
  * ```
  */
-export const publicEnv = clientEnv;
+export const publicEnv = new Proxy({} as ClientEnv, {
+  get(_target, prop) {
+    const { client } = getEnv();
+    return client?.[prop as keyof ClientEnv];
+  },
+});
 
 /**
  * Helper function to check if we're in development mode
  */
-export const isDev = (serverEnv?.NODE_ENV || process.env.NODE_ENV) === 'development';
+export function isDev(): boolean {
+  const { server: _serverEnv } = getEnv();
+  return _serverEnv?.NODE_ENV === 'development';
+}
 
 /**
  * Helper function to check if we're in production mode
  */
-export const isProd = (serverEnv?.NODE_ENV || process.env.NODE_ENV) === 'production';
+export function isProd(): boolean {
+  const { server: _serverEnv } = getEnv();
+  return _serverEnv?.NODE_ENV === 'production';
+}
 
 /**
  * Helper function to check if we're in test mode
  */
-export const isTest = (serverEnv?.NODE_ENV || process.env.NODE_ENV) === 'test';
+export function isTest(): boolean {
+  const { server: _serverEnv } = getEnv();
+  return _serverEnv?.NODE_ENV === 'test';
+}
 
 /**
  * Type exports for use in other modules

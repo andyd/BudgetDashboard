@@ -18,6 +18,7 @@ interface ComparisonPageProps {
  * Fetch comparison data by ID
  * In production, this would call your API endpoint
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getComparison(id: string): Promise<{
   comparison: FeaturedComparison;
   budgetItem: BudgetItem;
@@ -129,7 +130,6 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
   const { comparison, budgetItem, unit } = data;
 
   return (
-    <MainLayout>
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4 py-8 md:py-16">
         {/* Back Navigation */}
@@ -235,24 +235,23 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
               </Link>
             </div>
 
-          {/* Additional Information */}
-          <div className="border-t pt-6 text-center text-sm text-muted-foreground">
-            <p>
-              Data sourced from{' '}
-              <a
-                href="https://www.usaspending.gov"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-foreground transition-colors"
-              >
-                USAspending.gov
-              </a>
-              {'. '}Fiscal Year: {budgetItem.fiscalYear}
-            </p>
-          </div>
+            {/* Additional Information */}
+            <div className="border-t pt-6 text-center text-sm text-muted-foreground">
+              <p>
+                Data sourced from{' '}
+                <a
+                  href="https://www.usaspending.gov"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-foreground transition-colors"
+                >
+                  USAspending.gov
+                </a>
+                {'. '}Fiscal Year: {budgetItem.fiscalYear}
+              </p>
+            </div>
         </div>
       </div>
     </div>
-    </MainLayout>
   );
 }

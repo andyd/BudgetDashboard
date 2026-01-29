@@ -221,7 +221,7 @@ export default function AdminComparisonsPage() {
               <TableRow>
                 <TableCell colSpan={6} className="text-center h-32">
                   <p className="text-muted-foreground">
-                    No comparisons yet. Click "Add New" to create one.
+                    No comparisons yet. Click &quot;Add New&quot; to create one.
                   </p>
                 </TableCell>
               </TableRow>

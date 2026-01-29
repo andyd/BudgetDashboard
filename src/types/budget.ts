@@ -27,6 +27,15 @@ export interface BudgetItem {
 
   /** Year-over-year change as percentage (null if no prior year data) */
   yearOverYearChange: number | null;
+
+  /** Hierarchy level (0 for root, 1 for children, etc.) */
+  level?: number;
+
+  /** Budget code or identifier */
+  code?: string;
+
+  /** Child items in the hierarchy */
+  children?: BudgetItem[];
 }
 
 /**
@@ -72,16 +81,19 @@ export interface Department extends BudgetItem {
  */
 export interface BudgetHierarchy {
   /** Root budget item (typically "Federal Budget") */
-  root: BudgetItem;
+  root?: BudgetItem;
 
   /** Top-level departments */
-  departments: Department[];
+  departments?: Department[];
+
+  /** Top-level budget items */
+  items?: BudgetItem[];
 
   /** Total budget amount across all departments */
   totalAmount: number;
 
   /** Fiscal year for this hierarchy */
-  fiscalYear: number;
+  fiscalYear?: number;
 }
 
 /**

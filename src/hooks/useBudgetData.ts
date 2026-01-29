@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import type { BudgetItem, Comparison, Unit } from '@/types';
+import { useState, useEffect, useMemo } from 'react';
+import type { Comparison, Unit } from '@/types';
 import type {
   BudgetHierarchy,
   AnyBudgetItem,
@@ -41,6 +41,9 @@ export function useBudgetData(path?: string[]): UseDataState<BudgetHierarchy | A
     error: null,
   });
 
+  // Memoize path string to prevent unnecessary effect re-runs
+  const pathKey = useMemo(() => path?.join('/') || '', [path]);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -48,7 +51,7 @@ export function useBudgetData(path?: string[]): UseDataState<BudgetHierarchy | A
       try {
         setState(prev => ({ ...prev, loading: true, error: null }));
 
-        const pathParam = path && path.length > 0 ? `?path=${path.join('/')}` : '';
+        const pathParam = pathKey ? `?path=${pathKey}` : '';
         const response = await fetch(`/api/budget${pathParam}`, {
           cache: 'force-cache',
         });
@@ -82,7 +85,7 @@ export function useBudgetData(path?: string[]): UseDataState<BudgetHierarchy | A
     return () => {
       cancelled = true;
     };
-  }, [path?.join('/')]);
+  }, [pathKey]);
 
   return state;
 }

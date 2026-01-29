@@ -55,7 +55,6 @@ export function ShareModal({
   // Generate social sharing URLs
   const socialUrls = React.useMemo(() => {
     const encodedUrl = encodeURIComponent(shareUrl);
-    const encodedTitle = encodeURIComponent(title);
     const text = encodeURIComponent(`Check out this comparison: ${title}`);
 
     return {
@@ -79,7 +78,7 @@ export function ShareModal({
       setCopiedLink(true);
       toast.success('Link copied to clipboard!');
       setTimeout(() => setCopiedLink(false), 2000);
-    } catch (error) {
+    } catch {
       toast.error('Failed to copy link');
     }
   }, [shareUrl]);
@@ -91,7 +90,7 @@ export function ShareModal({
       setCopiedEmbed(true);
       toast.success('Embed code copied!');
       setTimeout(() => setCopiedEmbed(false), 2000);
-    } catch (error) {
+    } catch {
       toast.error('Failed to copy embed code');
     }
   }, [embedCode]);

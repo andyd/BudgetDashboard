@@ -29,7 +29,7 @@ export function AdminAuthForm() {
       } else {
         toast.error('Invalid password');
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Authentication failed');
     } finally {
       setIsLoading(false);

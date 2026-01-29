@@ -82,7 +82,7 @@ export function SourceCitationExamples() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            NASA's $25.4 billion budget equals approximately 12,700 Lamborghini Aventadors.
+            NASA&apos;s $25.4 billion budget equals approximately 12,700 Lamborghini Aventadors.
           </p>
           <div className="flex flex-col gap-2">
             <SourceCitation

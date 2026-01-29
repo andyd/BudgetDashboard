@@ -34,7 +34,7 @@ import Link from 'next/link';
 import { ArrowRight, Scale } from 'lucide-react';
 import type { BudgetItem } from '@/types/budget';
 import type { ComparisonUnit } from '@/types/comparison';
-import { mockUnits, getUnitById } from '@/lib/mock-data/units';
+import { mockUnits } from '@/lib/mock-data/units';
 import { cn } from '@/lib/utils';
 
 interface ContextualComparisonProps {
@@ -148,7 +148,6 @@ function findBestComparison(budgetItem: BudgetItem): ComparisonResult | null {
 
 export function ContextualComparison({
   budgetItem,
-  allBudgetItems,
   variant = 'default',
   className,
   showLink = true

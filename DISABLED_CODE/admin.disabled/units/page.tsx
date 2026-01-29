@@ -395,7 +395,7 @@ export default function UnitsPage() {
           <DialogHeader>
             <DialogTitle>Delete Comparison Unit</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{deletingUnit?.name}"? This action cannot be undone.
+              Are you sure you want to delete &quot;{deletingUnit?.name}&quot;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

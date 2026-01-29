@@ -332,7 +332,7 @@ export default function MethodologyPage() {
                   <h4 className="font-semibold mb-2">5. Comparison Limitations</h4>
                   <p className="text-sm text-muted-foreground">
                     Comparisons are illustrative and do not represent policy endorsements. A
-                    comparison showing "X could fund Y" does not imply substitutability or
+                    comparison showing &ldquo;X could fund Y&rdquo; does not imply substitutability or
                     equivalence of value. Budget decisions involve complex trade-offs not captured
                     by simple arithmetic.
                   </p>
@@ -351,7 +351,7 @@ export default function MethodologyPage() {
                   <h4 className="font-semibold mb-2">7. Off-Budget Items</h4>
                   <p className="text-sm text-muted-foreground">
                     Some spending (e.g., Social Security, USPS operations) is technically
-                    "off-budget" but is included in unified budget reporting. We follow OMB
+                    &ldquo;off-budget&rdquo; but is included in unified budget reporting. We follow OMB
                     conventions for consistency.
                   </p>
                 </div>
@@ -395,7 +395,7 @@ export default function MethodologyPage() {
                 <h3 className="text-xl font-semibold mb-3">Avoiding False Equivalencies</h3>
                 <p className="text-muted-foreground mb-4">
                   We are careful <em>not</em> to suggest that comparing defense spending to teacher
-                  salaries means we should "defund the military to hire teachers." Budget
+                  salaries means we should &ldquo;defund the military to hire teachers.&rdquo; Budget
                   trade-offs involve:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground ml-4">
@@ -425,7 +425,7 @@ export default function MethodologyPage() {
                 <h3 className="text-xl font-semibold mb-3">Nonpartisan Design Principle</h3>
                 <p className="text-muted-foreground">
                   This dashboard is intentionally neutral. We do not editorialize on whether
-                  spending is "too high" or "too low," nor do we advocate for specific policy
+                  spending is &ldquo;too high&rdquo; or &ldquo;too low,&rdquo; nor do we advocate for specific policy
                   changes. Our role is to present data clearly and allow users to draw their own
                   conclusions. Comparisons are selected for familiarity and relevance, not to
                   advance a particular ideology.

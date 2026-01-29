@@ -181,7 +181,7 @@ export function pluralize(
 export function formatOrdinal(n: number): string {
   const suffixes = ['th', 'st', 'nd', 'rd'];
   const value = n % 100;
-  return n + (suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0]);
+  return n + (suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0] || 'th');
 }
 
 /**

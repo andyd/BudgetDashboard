@@ -39,7 +39,7 @@ Complete implementation with the following features:
 - ✅ Clipboard API integration with fallback error handling
 - ✅ SSR-safe (window checks)
 
-### 2. `/src/components/comparison/ShareModal.example.tsx` (1.5KB)
+### 2. `/docs/component-examples/ShareModal.example.tsx` (1.5KB)
 
 **Example Usage File**
 
@@ -225,7 +225,7 @@ Modify the `socialUrls` text/title encoding
 ```
 /Users/andyd/code/1-Web-Apps/BudgetDashboard/src/components/comparison/
 ├── ShareModal.tsx              # Main component
-├── ShareModal.example.tsx      # Usage examples
+├── docs/component-examples/ShareModal.example.tsx      # Usage examples
 ├── ShareModal.README.md        # Full documentation
 └── ShareModal.SUMMARY.md       # This file
 ```

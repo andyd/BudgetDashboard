@@ -22,7 +22,7 @@ A generic, reusable data table for admin pages with full TypeScript support.
 
 - `AdminDataTable.tsx` - Main component
 - `AdminDataTable.md` - Comprehensive documentation
-- `AdminDataTable.example.tsx` - Usage examples
+- See `docs/component-examples/AdminDataTable.example.tsx` for usage examples
 - `index.ts` - Exports
 
 **Quick Start:**

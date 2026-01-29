@@ -266,6 +266,41 @@ const sampleFeaturedComparisons: FeaturedComparison[] = [
     createdAt: new Date("2025-01-15"),
     updatedAt: new Date("2025-01-15"),
   },
+  {
+    id: "3",
+    budgetItemId: "inaugural-balls",
+    budgetItemName: "Trump Inaugural Balls",
+    budgetAmount: 25000000,
+    unit: {
+      id: "healthcare-coverage",
+      name: "People with Healthcare",
+      nameSingular: "Person with Healthcare",
+      costPerUnit: 8500,
+      category: "everyday" as const,
+      description: "Average annual ACA marketplace premium",
+      icon: "🏥",
+    },
+    result: {
+      unitCount: 2941,
+      formatted: "2,941 People with Healthcare",
+      unit: {
+        id: "healthcare-coverage",
+        name: "People with Healthcare",
+        nameSingular: "Person with Healthcare",
+        costPerUnit: 8500,
+        category: "everyday" as const,
+      },
+      dollarAmount: 25000000,
+    },
+    headline: "Inaugural Balls = 2,941 with Healthcare",
+    context:
+      "The cost of Trump inaugural ballroom events could provide a year of healthcare for 2,941 people",
+    source: "FEC Inaugural Committee Filings, Healthcare.gov Premium Data",
+    priority: 95,
+    isFeatured: true,
+    createdAt: new Date("2025-01-29"),
+    updatedAt: new Date("2025-01-29"),
+  },
 ];
 
 export default function HomePage() {

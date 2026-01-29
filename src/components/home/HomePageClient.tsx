@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BudgetPieChart } from "@/components/budget/BudgetPieChart";
 import { DataFreshnessIndicator } from "@/components/budget/DataFreshnessIndicator";
+import { ICESpotlight } from "@/components/budget/ICESpotlight";
 import { FeaturedCarousel } from "@/components/comparison/FeaturedCarousel";
 import { ComparisonBuilder } from "@/components/comparison/ComparisonBuilder";
 import type { BudgetHierarchy, BudgetItem } from "@/types/budget";
@@ -82,6 +83,9 @@ export function HomePageClient({
 
           {/* Right: Featured Comparisons + Comparison Builder (40% - 2 columns) */}
           <div className="space-y-6 lg:col-span-2">
+            {/* ICE Spending Spotlight */}
+            <ICESpotlight />
+
             {/* Featured Carousel */}
             <div>
               <FeaturedCarousel

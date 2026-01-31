@@ -125,7 +125,7 @@ export const WASTEFUL_CATEGORIES: WizardCategory[] = [
     comparisonUnitIds: [],
   },
   {
-    id: "government-admin",
+    id: "admin",
     name: "Government Admin",
     icon: "Landmark",
     description: "Bureaucracy, overhead",
@@ -141,7 +141,7 @@ export const WASTEFUL_CATEGORIES: WizardCategory[] = [
     comparisonUnitIds: [],
   },
   {
-    id: "debt-interest",
+    id: "interest",
     name: "Interest on Debt",
     icon: "DollarSign",
     description: "Treasury interest payments",

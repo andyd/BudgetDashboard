@@ -36,7 +36,6 @@ export interface CategoryCardProps {
  * - Two size variants: default (compact) and large (with description)
  */
 export function CategoryCard({
-  id: _id,
   name,
   description,
   icon,
@@ -46,9 +45,12 @@ export function CategoryCard({
   disabled = false,
 }: CategoryCardProps) {
   // Dynamically get the icon component from lucide-react
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const IconComponent =
-    (Icons as Record<string, any>)[icon] || Icons.HelpCircle;
+  type IconProps = { className?: string; strokeWidth?: number };
+  const IconsRecord = Icons as unknown as Record<
+    string,
+    React.ComponentType<IconProps>
+  >;
+  const IconComponent = IconsRecord[icon] || Icons.HelpCircle;
 
   const isLarge = size === "large";
 

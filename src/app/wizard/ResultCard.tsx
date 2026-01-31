@@ -43,7 +43,6 @@ export const ResultCard = memo<ResultCardProps>(function ResultCard({
   budgetItemAmount,
   unitCount,
   unitName,
-  unitCost: _unitCost,
   isTopPriority,
   budgetItemId,
   unitId,

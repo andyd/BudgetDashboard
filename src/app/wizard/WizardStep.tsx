@@ -228,11 +228,6 @@ export function WizardStep({
                 duration: 0.3,
                 delay: 0.1 + index * 0.05,
               }}
-              style={{
-                // Slightly dim disabled cards
-                filter: isDisabled ? "brightness(0.8) opacity(0.7)" : "none",
-                pointerEvents: isDisabled ? "none" : "auto",
-              }}
             >
               <CategoryCard
                 id={category.id}
@@ -242,6 +237,7 @@ export function WizardStep({
                 selected={isSelected}
                 onClick={() => handleSelect(category.id)}
                 size={cardSize}
+                disabled={isDisabled}
               />
             </motion.div>
           );

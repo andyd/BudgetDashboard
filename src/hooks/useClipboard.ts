@@ -117,12 +117,26 @@ export function useClipboard(
           return true;
         } else {
           setError("Failed to copy to clipboard");
+
+          // Reset error state after timeout
+          timeoutRef.current = setTimeout(() => {
+            setError(null);
+            timeoutRef.current = null;
+          }, timeout);
+
           return false;
         }
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to copy to clipboard";
         setError(message);
+
+        // Reset error state after timeout
+        timeoutRef.current = setTimeout(() => {
+          setError(null);
+          timeoutRef.current = null;
+        }, timeout);
+
         return false;
       }
     },

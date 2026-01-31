@@ -62,10 +62,13 @@ export function WizardResults({
     }
 
     // Validate that categories exist in our definitions
+    // Using hasOwnProperty for safer object property checking (avoids prototype chain issues)
     const invalidPriorities = priorities.filter(
-      (p) => !(p in PRIORITY_CATEGORIES),
+      (p) => !Object.prototype.hasOwnProperty.call(PRIORITY_CATEGORIES, p),
     );
-    const invalidWasteful = wasteful.filter((w) => !(w in WASTEFUL_CATEGORIES));
+    const invalidWasteful = wasteful.filter(
+      (w) => !Object.prototype.hasOwnProperty.call(WASTEFUL_CATEGORIES, w),
+    );
 
     if (invalidPriorities.length > 0) {
       return `Invalid priority categories: ${invalidPriorities.join(", ")}`;
@@ -73,7 +76,9 @@ export function WizardResults({
     if (invalidWasteful.length > 0) {
       return `Invalid wasteful categories: ${invalidWasteful.join(", ")}`;
     }
-    if (!(topPriority in PRIORITY_CATEGORIES)) {
+    if (
+      !Object.prototype.hasOwnProperty.call(PRIORITY_CATEGORIES, topPriority)
+    ) {
       return `Invalid top priority: ${topPriority}`;
     }
 
@@ -95,7 +100,7 @@ export function WizardResults({
   // Handle validation errors
   if (validationError) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-3 sm:px-4 py-12 sm:py-16">
         <div className="max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -125,7 +130,7 @@ export function WizardResults({
   // Handle empty comparison results
   if (comparisons.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-3 sm:px-4 py-12 sm:py-16">
         <div className="max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -165,18 +170,18 @@ export function WizardResults({
 
   // Success state - show results
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className="text-center mb-6 sm:mb-8"
         >
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight">
             Your Personalized Budget Comparisons
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-2">
             Based on your priorities, here&apos;s how wasteful spending could
             fund what matters to you
           </p>
@@ -187,7 +192,7 @@ export function WizardResults({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
           <PrioritySummary
             priorities={priorities}
@@ -201,12 +206,12 @@ export function WizardResults({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="space-y-4 mb-8"
+          className="space-y-3 sm:space-y-4 mb-6 sm:mb-8"
         >
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 px-1">
             Your Comparisons ({comparisons.length})
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             {comparisons.map((comparison, index) => (
               <motion.div
                 key={`${comparison.budgetItem.id}-${comparison.unit.id}`}
@@ -236,22 +241,24 @@ export function WizardResults({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center"
         >
           <Button
             onClick={onRestart}
             variant="outline"
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto min-h-[44px]"
           >
-            <RefreshCcw className="mr-2 h-4 w-4" />
-            Try Different Priorities
+            <RefreshCcw className="mr-2 h-4 w-4 shrink-0" />
+            <span className="hidden sm:inline">Try Different Priorities</span>
+            <span className="inline sm:hidden">Try Again</span>
           </Button>
           <ShareButton />
           <Button
             onClick={() => router.push("/")}
-            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+            className="w-full sm:w-auto min-h-[44px] bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
           >
-            Explore Full Budget
+            <span className="hidden sm:inline">Explore Full Budget</span>
+            <span className="inline sm:hidden">Explore Budget</span>
           </Button>
         </motion.div>
       </div>

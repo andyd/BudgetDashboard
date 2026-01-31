@@ -59,6 +59,18 @@ export function WizardNavigation({
           {nextButtonText}
         </Button>
       </div>
+
+      {/* Screen reader status announcements */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {!canProceed &&
+          `Step ${step}: Please make at least one selection to continue`}
+        {canProceed && `Step ${step}: Ready to continue`}
+      </div>
     </nav>
   );
 }

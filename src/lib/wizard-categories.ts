@@ -155,7 +155,7 @@ export function getBudgetItemsForCategory(
       "program-aircraft-carrier",
       "program-nuclear-weapons",
       "program-missile-defense",
-      "program-overseas-bases",
+      "program-overseas-operations", // Fixed: was "program-overseas-bases"
     ],
     "foreign-aid": ["dept-state"],
     admin: ["dept-justice"], // Could add more admin-related items

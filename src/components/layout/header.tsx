@@ -33,7 +33,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
           {/* App Logo */}
@@ -45,9 +45,9 @@ export function Header() {
             <Image
               src="/app-icon.png"
               alt="Federal Budget Dashboard"
-              width={32}
-              height={32}
-              className="h-8 w-8 sm:h-9 sm:w-9"
+              width={96}
+              height={96}
+              className="h-24 w-24"
               priority
             />
           </Link>

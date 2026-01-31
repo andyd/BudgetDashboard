@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { HomePageClient } from "@/components/home/HomePageClient";
-import { ALL_BUDGET_ITEMS, ALL_COMPARISON_UNITS } from "@/lib/data";
+import { ALL_BUDGET_ITEMS } from "@/lib/data";
 import type { BudgetHierarchy } from "@/types/budget";
-import type { FeaturedComparison } from "@/types/comparison";
 
 export const metadata: Metadata = {
   title: "Federal Budget Dashboard - Where Your Tax Dollars Go",
@@ -166,114 +165,6 @@ const sampleBudgetData: BudgetHierarchy = {
   fiscalYear: 2025,
 };
 
-const sampleFeaturedComparisons: FeaturedComparison[] = [
-  {
-    id: "1",
-    budgetItemId: "ice-detention",
-    budgetItemName: "ICE Detention Operations",
-    budgetAmount: 3500000000,
-    unit: {
-      id: "teacher-salary",
-      name: "Teacher Salaries",
-      nameSingular: "Teacher Salary",
-      costPerUnit: 68000,
-      category: "everyday" as const,
-      description: "Average annual teacher salary",
-      icon: "👩‍🏫",
-    },
-    result: {
-      unitCount: 51470,
-      formatted: "51,470 Teacher Salaries",
-      unit: {
-        id: "teacher-salary",
-        name: "Teacher Salaries",
-        nameSingular: "Teacher Salary",
-        costPerUnit: 68000,
-        category: "everyday" as const,
-      },
-      dollarAmount: 3500000000,
-    },
-    headline: "ICE Detention = 51,470 Teacher Salaries",
-    context:
-      "Annual ICE detention operations cost as much as 51,470 teacher salaries for a year",
-    source: "DHS Budget FY2025, BLS Average Salary Data",
-    priority: 100,
-    isFeatured: true,
-    createdAt: new Date("2025-01-15"),
-    updatedAt: new Date("2025-01-15"),
-  },
-  {
-    id: "2",
-    budgetItemId: "f35-program",
-    budgetItemName: "F-35 Fighter Program",
-    budgetAmount: 13200000000,
-    unit: {
-      id: "school-construction",
-      name: "New Schools",
-      nameSingular: "New School",
-      costPerUnit: 38000000,
-      category: "buildings" as const,
-      description: "Cost to build a new public school",
-      icon: "🏫",
-    },
-    result: {
-      unitCount: 347,
-      formatted: "347 New Schools",
-      unit: {
-        id: "school-construction",
-        name: "New Schools",
-        nameSingular: "New School",
-        costPerUnit: 38000000,
-        category: "buildings" as const,
-      },
-      dollarAmount: 13200000000,
-    },
-    headline: "F-35 Program = 347 New Schools",
-    context:
-      "The annual F-35 program budget could build 347 new public schools",
-    source: "DoD Budget FY2025, School Construction Cost Index",
-    priority: 90,
-    isFeatured: true,
-    createdAt: new Date("2025-01-15"),
-    updatedAt: new Date("2025-01-15"),
-  },
-  {
-    id: "3",
-    budgetItemId: "inaugural-balls",
-    budgetItemName: "Trump Inaugural Balls",
-    budgetAmount: 25000000,
-    unit: {
-      id: "healthcare-coverage",
-      name: "People with Healthcare",
-      nameSingular: "Person with Healthcare",
-      costPerUnit: 8500,
-      category: "everyday" as const,
-      description: "Average annual ACA marketplace premium",
-      icon: "🏥",
-    },
-    result: {
-      unitCount: 2941,
-      formatted: "2,941 People with Healthcare",
-      unit: {
-        id: "healthcare-coverage",
-        name: "People with Healthcare",
-        nameSingular: "Person with Healthcare",
-        costPerUnit: 8500,
-        category: "everyday" as const,
-      },
-      dollarAmount: 25000000,
-    },
-    headline: "Inaugural Balls = 2,941 with Healthcare",
-    context:
-      "The cost of Trump inaugural ballroom events could provide a year of healthcare for 2,941 people",
-    source: "FEC Inaugural Committee Filings, Healthcare.gov Premium Data",
-    priority: 95,
-    isFeatured: true,
-    createdAt: new Date("2025-01-29"),
-    updatedAt: new Date("2025-01-29"),
-  },
-];
-
 export default function HomePage() {
   const currentFiscalYear = 2025;
   const lastUpdated = new Date("2025-10-01"); // FY2025 ended Sept 30, 2025
@@ -282,8 +173,6 @@ export default function HomePage() {
     <HomePageClient
       budgetData={sampleBudgetData}
       budgetItems={ALL_BUDGET_ITEMS}
-      comparisonUnits={ALL_COMPARISON_UNITS}
-      featuredComparisons={sampleFeaturedComparisons}
       currentFiscalYear={currentFiscalYear}
       lastUpdated={lastUpdated}
     />

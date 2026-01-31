@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, memo } from "react";
+import { useState, useMemo, useCallback, memo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { calculateComparison } from "@/lib/comparison-engine";
 import { ALL_COMPARISON_UNITS } from "@/lib/data";
@@ -63,6 +63,15 @@ export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
     const [selectedBudgetItemId, setSelectedBudgetItemId] =
       useState<string>(initialBudgetItemId);
     const [selectedUnitId, setSelectedUnitId] = useState<string>(initialUnitId);
+
+    // Sync internal state with props when they change (for controlled usage)
+    useEffect(() => {
+      setSelectedBudgetItemId(initialBudgetItemId);
+    }, [initialBudgetItemId]);
+
+    useEffect(() => {
+      setSelectedUnitId(initialUnitId);
+    }, [initialUnitId]);
 
     // Create unit lookup map - memoized to avoid recreation
     const unitMap = useMemo(() => {

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+
+  <defs>
+    <path id="shield" d="
+      M512 120
+      C380 120 250 170 200 200
+      V480
+      C200 680 350 820 512 900
+      C674 820 824 680 824 480
+      V200
+      C774 170 644 120 512 120 Z" />
+
+    <clipPath id="left">
+      <path d="
+        M512 120
+        C380 120 250 170 200 200
+        V480
+        C200 680 350 820 512 900
+        L512 120 Z"/>
+    </clipPath>
+
+    <clipPath id="right">
+      <path d="
+        M512 120
+        L512 900
+        C674 820 824 680 824 480
+        V200
+        C774 170 644 120 512 120 Z"/>
+    </clipPath>
+  </defs>
+
+  <use href="#shield" fill="none" stroke="#FFFFFF" stroke-width="60" stroke-linejoin="round"/>
+
+  <line x1="512" y1="160" x2="512" y2="860"
+        stroke="#FFFFFF" stroke-width="40" stroke-linecap="round"/>
+
+  <g clip-path="url(#left)" fill="#FFFFFF">
+    <rect x="240" y="220" width="272" height="220" opacity="0.18"/>
+
+    <path d="M310 290 l22 44 48 6-36 34 10 48-44-24-44 24 10-48-36-34 48-6z"/>
+    <path d="M430 260 l22 44 48 6-36 34 10 48-44-24-44 24 10-48-36-34 48-6z"/>
+    <path d="M390 350 l18 36 40 6-30 28 8 40-36-20-36 20 8-40-30-28 40-6z"/>
+
+    <path d="M240 500 C340 460 430 450 512 450"
+          stroke="#FFFFFF" stroke-width="60" stroke-linecap="round" fill="none"/>
+    <path d="M240 580 C350 540 430 530 512 530"
+          stroke="#FFFFFF" stroke-width="60" stroke-linecap="round" fill="none"/>
+    <path d="M240 660 C360 620 430 610 512 610"
+          stroke="#FFFFFF" stroke-width="60" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <g clip-path="url(#right)" fill="#FFFFFF">
+    <path d="
+      M650 300
+      C730 300 780 340 780 400
+      C780 460 720 490 660 505
+      C610 518 560 535 560 580
+      C560 620 600 650 660 650
+      C710 650 750 630 780 600
+      L820 640
+      C770 690 720 720 660 720
+      C570 720 500 670 500 585
+      C500 510 570 485 640 470
+      C700 458 720 440 720 400
+      C720 365 690 350 650 350
+      C610 350 580 370 555 395
+      L515 355
+      C560 315 600 300 650 300 Z" />
+
+    <line x1="640" y1="240" x2="640" y2="780"
+          stroke="#FFFFFF" stroke-width="70" stroke-linecap="round"/>
+  </g>
+
+</svg>

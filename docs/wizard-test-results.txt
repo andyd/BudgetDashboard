@@ -1,0 +1,190 @@
+================================================================================
+WIZARD DATA FLOW VALIDATION TEST RESULTS
+================================================================================
+Date: 2026-01-30
+Test Suite: src/lib/__tests__/wizard-data-flow.test.ts
+Status: 28/29 PASSING (96.6%)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TEST CATEGORY                              │ TESTS │ PASSED │ FAILED │ %   │
+├─────────────────────────────────────────────┼───────┼────────┼────────┼─────┤
+│ Category ID Validation                      │   2   │   2    │   0    │ 100%│
+│ Budget Items Mapping                        │   7   │   7    │   0    │ 100%│
+│ Comparison Units Mapping                    │   8   │   8    │   0    │ 100%│
+│ Category Budget Totals                      │   2   │   2    │   0    │ 100%│
+│ Wizard Comparison Generation                │   4   │   4    │   0    │ 100%│
+│ Data Integrity                              │   4   │   3    │   1    │  75%│
+│ Missing Data Detection                      │   3   │   3    │   0    │ 100%│
+├─────────────────────────────────────────────┼───────┼────────┼────────┼─────┤
+│ TOTAL                                       │  29   │  28    │   1    │ 96.6│
+└─────────────────────────────────────────────┴───────┴────────┴────────┴─────┘
+
+================================================================================
+ISSUES FOUND
+================================================================================
+
+CRITICAL: Duplicate Budget Item IDs
+────────────────────────────────────────────────────────────────────────────────
+  Count: 2 duplicates found (affecting 4 total entries)
+  
+  1. prog-pell-grants (appears 2 times)
+     • programs-education.ts:5
+     • programs-social.ts:60
+     • Value: $22,000,000,000
+     • Name: "Pell Grants"
+  
+  2. prog-head-start (appears 2 times)
+     • programs-education.ts:49
+     • programs-social.ts:93
+     • Value: $12,000,000,000
+     • Name: "Head Start"
+
+  Impact:
+    - getItemById() returns only first match
+    - Budget calculations may double-count these items
+    - Wizard comparisons may produce inconsistent results
+
+  Fix:
+    Remove both items from programs-social.ts
+    (Keep in programs-education.ts where they belong)
+
+================================================================================
+WHAT WAS VERIFIED ✓
+================================================================================
+
+✓ Category Definitions
+  • 8 priority categories defined (education, healthcare, veterans, etc.)
+  • 6 wasteful categories defined (defense, foreign-aid, admin, etc.)
+  • All have required metadata (name, description, icon)
+
+✓ Budget Item Mappings
+  • defense → 6 budget items found
+  • foreign-aid → dept-state found
+  • admin → dept-justice found
+  • farm-subsidies → dept-usda found
+  • interest → dept-treasury found
+  • All referenced IDs exist in data files
+
+✓ Comparison Unit Mappings
+  • education → education units found
+  • healthcare → healthcare units found
+  • veterans → veterans units found
+  • infrastructure → transportation units found
+  • environment → environment units found
+  • housing → housing units found
+  • science → education units found (shared)
+  • social-security → income units found
+
+✓ Budget Calculations
+  • All priority categories return valid totals > 0
+  • All wasteful categories return valid totals > 0 (except "other")
+
+✓ Comparison Generation
+  • Generates 1-5 comparisons for typical input
+  • Top priority matches are prioritized first
+  • All wasteful categories work (except "other")
+  • All priority categories work
+  • All comparisons have valid data
+
+✓ Data Integrity (Partial)
+  • No duplicate comparison unit IDs ✓
+  • All units have valid costs > 0 ✓
+  • All items have valid amounts > 0 ✓
+  • Budget item IDs unique ✗ (2 duplicates)
+
+✓ No Missing Data
+  • All referenced budget item IDs exist
+  • All priority categories have comparison units
+  • All wasteful categories have budget items (except "other")
+
+================================================================================
+DATA FLOW DIAGRAM
+================================================================================
+
+User selects categories
+         │
+         ▼
+   [PRIORITY_CATEGORIES]      [WASTEFUL_CATEGORIES]
+    (8 categories) ✓           (6 categories) ✓
+         │                            │
+         ▼                            ▼
+getComparisonUnitsForCategory  getBudgetItemsForCategory
+         │                            │
+         ▼                            ▼
+  [Comparison Units]           [Budget Items]
+   (All categories              (5/6 categories
+    have units) ✓                have items) ✓
+         │                            │
+         └─────────┬──────────────────┘
+                   ▼
+        generateWizardComparisons()
+                   │
+                   ▼
+         [WizardComparison[]]
+          (Valid results) ✓
+
+================================================================================
+FILES CREATED
+================================================================================
+
+1. Test Suite (29 comprehensive tests)
+   📄 src/lib/__tests__/wizard-data-flow.test.ts
+
+2. Browser Console Test
+   📄 public/test-wizard-data-flow.js
+
+3. Duplicate Finder Script
+   📄 scripts/find-duplicates.ts
+
+4. Documentation
+   📄 docs/wizard-data-flow-analysis.md (detailed analysis)
+   📄 docs/testing-wizard-data-flow.md (how to run tests)
+   📄 WIZARD_DATA_FLOW_SUMMARY.md (executive summary)
+   📄 TEST_RESULTS_SUMMARY.txt (this file)
+
+================================================================================
+QUICK COMMANDS
+================================================================================
+
+Run Tests:
+  $ pnpm test:unit src/lib/__tests__/wizard-data-flow.test.ts
+
+Find Duplicates:
+  $ npx tsx scripts/find-duplicates.ts
+
+Watch Mode:
+  $ pnpm test:unit src/lib/__tests__/wizard-data-flow.test.ts --watch
+
+Specific Test:
+  $ pnpm test:unit wizard-data-flow.test.ts -t "Budget Items"
+
+================================================================================
+FIX REQUIRED
+================================================================================
+
+Edit: src/lib/data/budget-items/programs-social.ts
+
+Remove these two items (keep them in programs-education.ts):
+
+  Line ~60:  Remove prog-pell-grants
+  Line ~93:  Remove prog-head-start
+
+After fix, re-run tests to confirm: 29/29 PASSING ✓
+
+================================================================================
+CONCLUSION
+================================================================================
+
+Status: MOSTLY WORKING ✓
+  • 28/29 tests passing
+  • All core functionality validated
+  • 1 data integrity issue (easy fix)
+
+Next Steps:
+  1. Fix duplicate IDs in programs-social.ts
+  2. Re-run tests to verify 29/29 passing
+  3. Add tests to CI pipeline
+
+Overall Assessment: READY FOR PRODUCTION after duplicate fix
+
+================================================================================

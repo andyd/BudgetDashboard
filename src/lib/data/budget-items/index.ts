@@ -7,6 +7,9 @@ import { INFRASTRUCTURE_PROGRAMS } from "./programs-infrastructure";
 import { VETERANS_PROGRAMS } from "./programs-veterans";
 import { EDUCATION_PROGRAMS } from "./programs-education";
 import { CURRENT_EVENT_ITEMS } from "./current-events";
+import { GOVERNMENT_PROGRAMS } from "./programs-government";
+import { FOREIGN_PROGRAMS } from "./programs-foreign";
+import { WASTE_PROGRAMS } from "./programs-waste";
 
 // Re-export interface
 export type { BudgetSpendingItem };
@@ -22,6 +25,9 @@ export const ALL_BUDGET_ITEMS: BudgetSpendingItem[] = [
   ...VETERANS_PROGRAMS,
   ...EDUCATION_PROGRAMS,
   ...CURRENT_EVENT_ITEMS,
+  ...GOVERNMENT_PROGRAMS,
+  ...FOREIGN_PROGRAMS,
+  ...WASTE_PROGRAMS,
 ];
 
 // Get items filtered by tier

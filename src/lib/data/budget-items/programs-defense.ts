@@ -111,4 +111,70 @@ export const DEFENSE_PROGRAMS: BudgetSpendingItem[] = [
     description:
       "Construction and renovation of military bases, facilities, and family housing worldwide.",
   },
+  {
+    id: "program-virginia-submarine",
+    name: "Virginia-Class Submarine",
+    amount: 3_800_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "Congressional Research Service",
+    description:
+      "Cost of one Virginia-class nuclear-powered fast attack submarine for anti-submarine warfare and intelligence operations.",
+  },
+  {
+    id: "program-columbia-submarine",
+    name: "Columbia-Class Submarine",
+    amount: 9_000_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "Congressional Budget Office",
+    description:
+      "Cost of one Columbia-class ballistic missile submarine, the most expensive submarine ever built, carrying nuclear missiles.",
+  },
+  {
+    id: "program-b21-bomber",
+    name: "B-21 Raider Bomber",
+    amount: 750_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "U.S. Air Force",
+    description:
+      "Cost of one B-21 Raider next-generation stealth bomber for long-range strike missions.",
+  },
+  {
+    id: "program-abrams-tank",
+    name: "M1 Abrams Tank",
+    amount: 10_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "Department of Defense",
+    description:
+      "Cost of one M1 Abrams main battle tank, the primary ground combat vehicle of the U.S. Army.",
+  },
+  {
+    id: "program-overseas-bases",
+    name: "Overseas Military Bases",
+    amount: 25_000_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "Department of Defense Base Structure Report",
+    description:
+      "Annual operating costs for approximately 750 U.S. military bases in over 80 countries worldwide.",
+  },
+  {
+    id: "program-military-bands",
+    name: "Military Bands",
+    amount: 437_000_000,
+    tier: "program",
+    parentId: "dept-defense",
+    fiscalYear: 2025,
+    source: "Government Accountability Office",
+    description:
+      "Annual cost for military bands across all service branches including personnel, equipment, and travel.",
+  },
 ];

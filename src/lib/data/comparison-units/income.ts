@@ -49,4 +49,15 @@ export const INCOME_UNITS: ComparisonUnit[] = [
     description: "Average weekly unemployment insurance benefit",
     icon: "briefcase",
   },
+  {
+    id: "minimum-wage-annual",
+    name: "Minimum Wage Annual Incomes",
+    nameSingular: "Minimum Wage Annual Income",
+    costPerUnit: 15080,
+    period: "year",
+    category: "income",
+    description:
+      "Annual income for a full-time worker at federal minimum wage ($7.25/hr × 40hrs × 52 weeks)",
+    icon: "dollar-sign",
+  },
 ];

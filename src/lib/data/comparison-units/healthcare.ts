@@ -13,6 +13,17 @@ export const HEALTHCARE_UNITS: ComparisonUnit[] = [
       "Average annual premium for employer-sponsored individual health insurance coverage",
   },
   {
+    id: "health-insurance-monthly",
+    name: "monthly health insurance premiums",
+    nameSingular: "monthly health insurance premium",
+    cost: 700,
+    category: "healthcare",
+    icon: "Shield",
+    source: "KFF Employer Health Benefits Survey 2024",
+    description:
+      "Average monthly premium for individual health insurance coverage",
+  },
+  {
     id: "emergency-room-visit",
     name: "emergency room visits",
     nameSingular: "emergency room visit",
@@ -65,6 +76,17 @@ export const HEALTHCARE_UNITS: ComparisonUnit[] = [
     source: "American Psychological Association 2024",
     description:
       "Average cost of a single outpatient mental health therapy session",
+  },
+  {
+    id: "therapy-year-weekly",
+    name: "years of weekly therapy",
+    nameSingular: "year of weekly therapy",
+    cost: 7800,
+    category: "healthcare",
+    icon: "Brain",
+    source: "American Psychological Association 2024",
+    description:
+      "Annual cost of weekly mental health therapy sessions (52 sessions)",
   },
   {
     id: "ambulance-ride",

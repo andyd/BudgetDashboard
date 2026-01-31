@@ -1,0 +1,111 @@
+import type { ComparisonUnit } from "@/types/comparison";
+
+export const HEALTHCARE_UNITS: ComparisonUnit[] = [
+  {
+    id: "health-insurance-annual",
+    name: "annual health insurance premiums",
+    nameSingular: "annual health insurance premium",
+    cost: 8500,
+    category: "healthcare",
+    icon: "Shield",
+    source: "KFF Employer Health Benefits Survey 2024",
+    description:
+      "Average annual premium for employer-sponsored individual health insurance coverage",
+  },
+  {
+    id: "emergency-room-visit",
+    name: "emergency room visits",
+    nameSingular: "emergency room visit",
+    cost: 2200,
+    category: "healthcare",
+    icon: "Ambulance",
+    source: "Health Care Cost Institute 2024",
+    description: "Average cost of an emergency room visit in the United States",
+  },
+  {
+    id: "insulin-annual-supply",
+    name: "annual insulin supplies",
+    nameSingular: "annual insulin supply",
+    cost: 6000,
+    category: "healthcare",
+    icon: "Syringe",
+    source: "RAND Corporation 2024",
+    description:
+      "Average annual out-of-pocket cost for insulin for diabetic patients in the US",
+  },
+  {
+    id: "childbirth-hospital",
+    name: "hospital childbirths",
+    nameSingular: "hospital childbirth",
+    cost: 18000,
+    category: "healthcare",
+    icon: "Baby",
+    source: "Peterson-KFF Health System Tracker 2024",
+    description:
+      "Average hospital cost for vaginal childbirth in the United States",
+  },
+  {
+    id: "cancer-treatment-course",
+    name: "cancer treatment courses",
+    nameSingular: "cancer treatment course",
+    cost: 150000,
+    category: "healthcare",
+    icon: "HeartPulse",
+    source: "American Cancer Society 2024",
+    description:
+      "Average cost of a full cancer treatment course including chemotherapy and radiation",
+  },
+  {
+    id: "mental-health-therapy-session",
+    name: "mental health therapy sessions",
+    nameSingular: "mental health therapy session",
+    cost: 150,
+    category: "healthcare",
+    icon: "Brain",
+    source: "American Psychological Association 2024",
+    description:
+      "Average cost of a single outpatient mental health therapy session",
+  },
+  {
+    id: "ambulance-ride",
+    name: "ambulance rides",
+    nameSingular: "ambulance ride",
+    cost: 1200,
+    category: "healthcare",
+    icon: "Truck",
+    source: "Government Accountability Office 2024",
+    description:
+      "Average cost of ground ambulance transport in the United States",
+  },
+  {
+    id: "prescription-drugs-annual",
+    name: "annual prescription drug costs",
+    nameSingular: "annual prescription drug cost",
+    cost: 1300,
+    category: "healthcare",
+    icon: "Pill",
+    source: "CMS National Health Expenditure Data 2024",
+    description:
+      "Average annual out-of-pocket spending on prescription drugs per person",
+  },
+  {
+    id: "medicare-per-beneficiary",
+    name: "Medicare beneficiary years",
+    nameSingular: "Medicare beneficiary year",
+    cost: 15000,
+    category: "healthcare",
+    icon: "Users",
+    source: "CMS Medicare Spending Data 2024",
+    description: "Average annual Medicare spending per beneficiary",
+  },
+  {
+    id: "medicaid-per-beneficiary",
+    name: "Medicaid beneficiary years",
+    nameSingular: "Medicaid beneficiary year",
+    cost: 9000,
+    category: "healthcare",
+    icon: "UserCheck",
+    source: "CMS Medicaid Spending Data 2024",
+    description: "Average annual Medicaid spending per beneficiary",
+  },
+];

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { HomePageClient } from "@/components/home/HomePageClient";
-import type { BudgetHierarchy, BudgetItem } from "@/types/budget";
+import { ALL_BUDGET_ITEMS, ALL_COMPARISON_UNITS } from "@/lib/data";
+import type { BudgetHierarchy } from "@/types/budget";
 import type { FeaturedComparison } from "@/types/comparison";
 
 export const metadata: Metadata = {
@@ -165,36 +166,6 @@ const sampleBudgetData: BudgetHierarchy = {
   fiscalYear: 2025,
 };
 
-const sampleBudgetItems: BudgetItem[] = [
-  {
-    id: "defense",
-    name: "Defense Department",
-    amount: 895000000000,
-    parentId: null,
-    fiscalYear: 2025,
-    percentOfParent: null,
-    yearOverYearChange: 7.0,
-  },
-  {
-    id: "ice-detention",
-    name: "ICE Detention Operations",
-    amount: 3500000000,
-    parentId: "homeland-security",
-    fiscalYear: 2025,
-    percentOfParent: 3.0,
-    yearOverYearChange: 9.4,
-  },
-  {
-    id: "f35-program",
-    name: "F-35 Fighter Program",
-    amount: 13200000000,
-    parentId: "defense",
-    fiscalYear: 2025,
-    percentOfParent: 1.5,
-    yearOverYearChange: 6.5,
-  },
-];
-
 const sampleFeaturedComparisons: FeaturedComparison[] = [
   {
     id: "1",
@@ -310,7 +281,8 @@ export default function HomePage() {
   return (
     <HomePageClient
       budgetData={sampleBudgetData}
-      budgetItems={sampleBudgetItems}
+      budgetItems={ALL_BUDGET_ITEMS}
+      comparisonUnits={ALL_COMPARISON_UNITS}
       featuredComparisons={sampleFeaturedComparisons}
       currentFiscalYear={currentFiscalYear}
       lastUpdated={lastUpdated}

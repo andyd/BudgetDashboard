@@ -1,0 +1,52 @@
+import type { ComparisonUnit } from "@/types/comparison";
+
+export const INCOME_UNITS: ComparisonUnit[] = [
+  {
+    id: "federal-minimum-wage-hour",
+    name: "Federal Minimum Wage Hours",
+    nameSingular: "Federal Minimum Wage Hour",
+    costPerUnit: 7.25,
+    category: "income",
+    description: "One hour of work at the federal minimum wage",
+    icon: "clock",
+  },
+  {
+    id: "median-household-income",
+    name: "Median Household Incomes",
+    nameSingular: "Median Household Income",
+    costPerUnit: 75000,
+    period: "year",
+    category: "income",
+    description: "Annual median household income in the United States",
+    icon: "users",
+  },
+  {
+    id: "living-wage-annual",
+    name: "Living Wage Annuals",
+    nameSingular: "Living Wage Annual",
+    costPerUnit: 45000,
+    period: "year",
+    category: "income",
+    description: "Estimated annual living wage for a single adult in the US",
+    icon: "wallet",
+  },
+  {
+    id: "social-security-check-year",
+    name: "Social Security Checks (Annual)",
+    nameSingular: "Social Security Check (Annual)",
+    costPerUnit: 22800,
+    period: "year",
+    category: "income",
+    description: "Average annual Social Security retirement benefit",
+    icon: "landmark",
+  },
+  {
+    id: "unemployment-benefit-week",
+    name: "Unemployment Benefits (Weekly)",
+    nameSingular: "Unemployment Benefit (Weekly)",
+    costPerUnit: 380,
+    category: "income",
+    description: "Average weekly unemployment insurance benefit",
+    icon: "briefcase",
+  },
+];

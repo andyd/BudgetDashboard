@@ -44,7 +44,11 @@ export interface ComparisonUnit {
     | "healthcare"
     | "education"
     | "general"
-    | "housing";
+    | "housing"
+    | "environment"
+    | "public-services"
+    | "income"
+    | "veterans";
 
   /** Short description */
   description?: string;

@@ -51,101 +51,78 @@ export function HomePageClient({
         </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="bg-muted/10">
-        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="mb-2 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                Where Your Tax Dollars Go
-              </h1>
-              <p className="text-lg text-muted-foreground sm:text-xl">
-                Fiscal Year {currentFiscalYear}
-              </p>
-            </div>
-            <div className="flex items-center">
-              <DataFreshnessIndicator
-                lastUpdated={lastUpdated}
-                source="USAspending.gov"
-                sourceUrl="https://www.usaspending.gov"
-              />
-            </div>
+      {/* Hero Section - Comparison Builder */}
+      <section className="bg-gradient-to-b from-muted/20 to-background">
+        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          {/* Hero Headline */}
+          <div className="mb-8 text-center">
+            <h1 className="mb-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              What Could Your Tax Dollars Buy?
+            </h1>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground sm:text-xl">
+              Turn billions into tangible comparisons. FY {currentFiscalYear}
+            </p>
+          </div>
+
+          {/* Comparison Builder as Hero */}
+          <div className="mx-auto max-w-2xl">
+            <ComparisonBuilder
+              budgetItems={budgetItems}
+              onShare={handleBuilderShare}
+            />
+          </div>
+
+          {/* Data Freshness - subtle placement */}
+          <div className="mt-8 flex justify-center">
+            <DataFreshnessIndicator
+              lastUpdated={lastUpdated}
+              source="USAspending.gov"
+              sourceUrl="https://www.usaspending.gov"
+            />
           </div>
         </div>
       </section>
 
-      {/* Main Visualization Section - Side by Side Layout */}
-      <section className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
-          {/* Left: Budget Pie Chart (60% - 3 columns) */}
-          <div className="lg:col-span-3">
-            <div className="sticky top-4 h-[600px]">
-              <BudgetPieChart
-                data={budgetData}
-                onItemClick={handleItemClick}
-                onItemHover={handleItemHover}
-              />
-            </div>
-          </div>
+      {/* Below Fold: Budget Overview Section */}
+      <section className="border-t bg-muted/10">
+        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+          <h2 className="mb-8 text-center text-2xl font-bold sm:text-3xl">
+            Explore the Full Budget
+          </h2>
 
-          {/* Right: Featured Comparisons + Comparison Builder (40% - 2 columns) */}
-          <div className="space-y-6 lg:col-span-2">
-            {/* Featured Carousel */}
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* Budget Pie Chart - Smaller */}
             <div>
-              <FeaturedCarousel
-                comparisons={featuredComparisons}
-                autoRotateMs={8000}
-              />
-            </div>
-
-            {/* Quick Compare Widget */}
-            <div>
-              <div className="rounded-lg border bg-muted/30 p-6">
-                <h3 className="mb-2 text-lg font-semibold">Quick Compare</h3>
-                <p className="mb-4 text-sm text-muted-foreground">
-                  Build your own comparison
-                </p>
-                <div className="space-y-3">
-                  <div className="rounded-lg border bg-background p-3 text-sm text-muted-foreground">
-                    Select budget item...
-                  </div>
-                  <div className="text-center text-muted-foreground">→</div>
-                  <div className="rounded-lg border bg-background p-3 text-sm text-muted-foreground">
-                    Select comparison unit...
-                  </div>
-                  <Link
-                    href="#comparison-builder"
-                    className="block w-full rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                  >
-                    Build Full Comparison
-                  </Link>
-                </div>
+              <div className="h-[400px]">
+                <BudgetPieChart
+                  data={budgetData}
+                  onItemClick={handleItemClick}
+                  onItemHover={handleItemHover}
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <Link
+                  href="/budget"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  View detailed breakdown →
+                </Link>
               </div>
             </div>
 
-            {/* Contextual Info */}
-            <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
-              <h4 className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400">
-                How to use this dashboard
-              </h4>
-              <ul className="space-y-1 text-xs text-muted-foreground">
-                <li>• Click any segment to drill down into details</li>
-                <li>• Hover to see contextual comparisons</li>
-                <li>• Build custom comparisons below</li>
-                <li>• Share comparisons via unique URLs</li>
-              </ul>
+            {/* Featured Carousel */}
+            <div className="flex flex-col">
+              <h3 className="mb-4 text-lg font-semibold">
+                Featured Comparisons
+              </h3>
+              <div className="flex-1">
+                <FeaturedCarousel
+                  comparisons={featuredComparisons}
+                  autoRotateMs={8000}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Below Fold: Full Comparison Builder Section */}
-      <section id="comparison-builder" className="border-y bg-muted/20">
-        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-          <ComparisonBuilder
-            budgetItems={budgetItems}
-            onShare={handleBuilderShare}
-          />
         </div>
       </section>
 
@@ -208,12 +185,12 @@ export function HomePageClient({
             others. Help make federal spending understandable for everyone.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="#comparison-builder"
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Build a Comparison
-            </Link>
+            </button>
             <Link
               href="/about"
               className="rounded-lg border bg-background px-6 py-3 font-medium transition-colors hover:bg-muted/50"

@@ -37,7 +37,6 @@ export function ComparisonCardMini({
       )}
     >
       <div className="flex items-start gap-3">
-        {unitIcon && <span className="text-2xl">{unitIcon}</span>}
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-muted-foreground truncate">
             {budgetItemName}

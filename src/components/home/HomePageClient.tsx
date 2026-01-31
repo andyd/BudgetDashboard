@@ -36,19 +36,19 @@ const EXAMPLE_COMPARISONS: Array<{
     budgetItemId: "ice-detention",
     budgetItemName: "ICE Detention Operations",
     budgetAmount: 3_500_000_000,
-    unitId: "pell-grant",
+    unitId: "pell-grant-max",
   },
   {
     budgetItemId: "nasa",
     budgetItemName: "NASA Budget",
     budgetAmount: 25_000_000_000,
-    unitId: "school-construction",
+    unitId: "affordable-housing-unit",
   },
   {
     budgetItemId: "border-wall",
     budgetItemName: "Border Wall Construction",
     budgetAmount: 1_200_000_000,
-    unitId: "affordable-housing",
+    unitId: "year-of-rent",
   },
   {
     budgetItemId: "trump-inaugural",
@@ -66,13 +66,13 @@ const EXAMPLE_COMPARISONS: Array<{
     budgetItemId: "nuclear-weapons",
     budgetItemName: "Nuclear Weapons Maintenance",
     budgetAmount: 37_700_000_000,
-    unitId: "va-healthcare",
+    unitId: "va-healthcare-annual",
   },
   {
     budgetItemId: "snap-benefits",
     budgetItemName: "SNAP Benefits",
     budgetAmount: 119_000_000_000,
-    unitId: "median-home",
+    unitId: "median-home-price",
   },
 ];
 

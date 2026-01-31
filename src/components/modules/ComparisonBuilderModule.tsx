@@ -16,7 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Link2, ChevronDown, Equal, Share2 } from "lucide-react";
+import { Link2, ChevronDown, Equal, Share2, Sparkles } from "lucide-react";
+import Link from "next/link";
 import type { BudgetItem } from "@/types/budget";
 import type { ComparisonUnit } from "@/types/comparison";
 
@@ -279,6 +280,22 @@ export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
             source="USAspending.gov"
             sourceUrl="https://www.usaspending.gov"
           />
+        </div>
+
+        {/* Wizard CTA */}
+        <div className="mt-4 flex justify-center">
+          <Link
+            href="/wizard"
+            className="group flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-emerald-400"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>
+              Not sure where to start?{" "}
+              <span className="underline underline-offset-2 group-hover:text-emerald-300">
+                Take the Budget Priority Quiz
+              </span>
+            </span>
+          </Link>
         </div>
       </div>
     );

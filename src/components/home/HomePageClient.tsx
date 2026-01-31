@@ -176,11 +176,8 @@ export const HomePageClient = memo<HomePageClientProps>(
         headerBanner={
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
-              How We Spend. How We Could Spend.
+              How Government Spends Our Money, And What Else We Could Do With It
             </h1>
-            <p className="mt-2 text-base text-slate-300 sm:text-lg md:text-xl lg:text-2xl">
-              What Your Tax Dollars Buy. And What They Could.
-            </p>
             <p className="mt-3 text-xs font-medium uppercase tracking-widest text-slate-500 sm:text-sm">
               Rethinking U.S. Federal Spending
             </p>

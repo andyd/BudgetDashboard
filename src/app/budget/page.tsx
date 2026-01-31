@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { BudgetOverviewClient } from "./BudgetOverviewClient";
-import { ALL_BUDGET_ITEMS, DEPARTMENT_ITEMS } from "@/lib/data";
+import { DEPARTMENT_ITEMS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Federal Budget Overview - Explore All Departments & Programs",
@@ -46,11 +46,5 @@ export const metadata: Metadata = {
 };
 
 export default function BudgetOverviewPage() {
-  // Pass data to client component
-  return (
-    <BudgetOverviewClient
-      allBudgetItems={ALL_BUDGET_ITEMS}
-      departmentItems={DEPARTMENT_ITEMS}
-    />
-  );
+  return <BudgetOverviewClient departmentItems={DEPARTMENT_ITEMS} />;
 }

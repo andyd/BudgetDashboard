@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { BudgetTable } from "@/components/budget/BudgetTable";
@@ -10,15 +10,11 @@ import {
 } from "@/components/budget/BudgetSummaryCards";
 import { BudgetPieChart } from "@/components/budget/BudgetPieChart";
 import { formatCurrency } from "@/lib/format";
-import { ChevronRight, Table, PieChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
 import type { BudgetItem, BudgetHierarchy } from "@/types/budget";
 import type { BudgetSpendingItem } from "@/lib/data";
 
-type ViewMode = "table" | "chart";
-
 interface BudgetOverviewClientProps {
-  allBudgetItems: BudgetSpendingItem[];
   departmentItems: BudgetSpendingItem[];
 }
 
@@ -26,11 +22,8 @@ interface BudgetOverviewClientProps {
 const US_POPULATION = 336_000_000;
 
 export function BudgetOverviewClient({
-  allBudgetItems,
   departmentItems,
 }: BudgetOverviewClientProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
-
   // Calculate summary data
   const summaryData: BudgetSummaryData = useMemo(() => {
     const totalBudget = departmentItems.reduce(
@@ -86,73 +79,39 @@ export function BudgetOverviewClient({
     };
   }, [departmentItems, summaryData.totalBudget]);
 
-  // Main content - Department list with view toggle
+  // Main content - Pie chart above table
   const mainContent = (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">
-            Federal Budget Overview
-          </h1>
-          <p className="mt-1 text-slate-400">
-            FY2025 Federal Spending by Department
-          </p>
-        </div>
-
-        {/* View Toggle */}
-        <div className="flex gap-2">
-          <Button
-            variant={viewMode === "table" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("table")}
-            className={
-              viewMode === "table"
-                ? "bg-blue-600 hover:bg-blue-500"
-                : "border-slate-600 text-slate-300 hover:bg-slate-800"
-            }
-          >
-            <Table className="mr-2 h-4 w-4" />
-            Table
-          </Button>
-          <Button
-            variant={viewMode === "chart" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("chart")}
-            className={
-              viewMode === "chart"
-                ? "bg-blue-600 hover:bg-blue-500"
-                : "border-slate-600 text-slate-300 hover:bg-slate-800"
-            }
-          >
-            <PieChart className="mr-2 h-4 w-4" />
-            Chart
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-white sm:text-3xl">
+          Federal Budget Overview
+        </h1>
+        <p className="mt-1 text-slate-400">
+          FY2025 Federal Spending by Department
+        </p>
       </div>
 
-      {/* Main Visualization */}
-      {viewMode === "table" ? (
-        <div className="rounded-xl border border-slate-700/50 bg-slate-900/50">
-          <BudgetTable
-            budgetItems={tableItems}
-            basePath="/budget"
-            showPercentOfTotal={true}
-            showYoYChange={false}
-            className="border-0"
-          />
-        </div>
-      ) : (
-        <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-6">
-          <div className="h-[400px]">
-            <BudgetPieChart
-              data={budgetHierarchy}
-              onItemClick={() => {}}
-              onItemHover={() => {}}
-            />
-          </div>
-        </div>
-      )}
+      {/* Pie Chart */}
+      <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-6">
+        <BudgetPieChart
+          data={budgetHierarchy}
+          height={400}
+          onItemClick={() => {}}
+          onItemHover={() => {}}
+        />
+      </div>
+
+      {/* Budget Table */}
+      <div className="rounded-xl border border-slate-700/50 bg-slate-900/50">
+        <BudgetTable
+          budgetItems={tableItems}
+          basePath="/budget"
+          showPercentOfTotal={true}
+          showYoYChange={false}
+          className="border-0"
+        />
+      </div>
     </div>
   );
 

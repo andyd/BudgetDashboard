@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Github, ExternalLink } from "lucide-react";
 
 const navigation = {
@@ -45,11 +46,13 @@ export function Footer() {
               href="/"
               className="inline-flex items-center gap-2 min-h-[44px] -ml-2 pl-2 pr-3 py-2 rounded-lg hover:bg-muted/50 transition-colors"
             >
-              <div className="bg-primary h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-primary-foreground text-xs font-bold">
-                  $
-                </span>
-              </div>
+              <Image
+                src="/app-icon.png"
+                alt="Federal Budget Dashboard"
+                width={32}
+                height={32}
+                className="h-8 w-8 flex-shrink-0"
+              />
               <span className="text-base sm:text-lg font-bold leading-tight">
                 Federal Budget Dashboard
               </span>

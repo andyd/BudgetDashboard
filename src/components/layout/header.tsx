@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,9 +33,25 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 sm:h-16 items-center justify-end gap-4">
+        <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
+          {/* App Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
+            aria-label="Go to home page"
+          >
+            <Image
+              src="/app-icon.png"
+              alt="Federal Budget Dashboard"
+              width={32}
+              height={32}
+              className="h-8 w-8 sm:h-9 sm:w-9"
+              priority
+            />
+          </Link>
+
           {/* Desktop Navigation */}
           <nav
             className="hidden md:flex md:items-center md:gap-6 lg:gap-8"

@@ -35,26 +35,31 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-10">
-        <div className="flex items-center justify-between gap-4">
-          {/* App Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
-            aria-label="Go to home page"
-          >
-            <Image
-              src="/app-icon.png"
-              alt="Federal Budget Dashboard"
-              width={96}
-              height={96}
-              className="h-24 w-24"
-              priority
-            />
-          </Link>
+        <div className="grid grid-cols-3 items-center">
+          {/* Left spacer - matches nav width for centering */}
+          <div className="hidden md:block" />
+
+          {/* App Logo - Centered */}
+          <div className="flex justify-center col-span-2 md:col-span-1">
+            <Link
+              href="/"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
+              aria-label="Go to home page"
+            >
+              <Image
+                src="/app-icon.png"
+                alt="Federal Budget Dashboard"
+                width={96}
+                height={96}
+                className="h-24 w-24"
+                priority
+              />
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden md:flex md:items-center md:gap-6 lg:gap-8"
+            className="hidden md:flex md:items-center md:justify-end md:gap-6 lg:gap-8"
             aria-label="Main navigation"
           >
             {navigationLinks.map((link) => (
@@ -76,7 +81,7 @@ export function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center">
+          <div className="flex md:hidden items-center justify-end">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button

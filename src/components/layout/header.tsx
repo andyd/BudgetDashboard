@@ -31,20 +31,9 @@ export function Header() {
   };
 
   return (
-    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+    <header className="sticky top-0 z-50 w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
-          {/* Logo/Title */}
-          <div className="flex items-center min-w-0 flex-shrink">
-            <Link
-              href="/"
-              className="text-base sm:text-lg lg:text-xl font-bold text-foreground hover:text-foreground/90 transition-colors truncate"
-            >
-              <span className="hidden sm:inline">USA Government Budget</span>
-              <span className="sm:hidden">Budget Dashboard</span>
-            </Link>
-          </div>
-
+        <div className="flex h-14 sm:h-16 items-center justify-end gap-4">
           {/* Desktop Navigation */}
           <nav
             className="hidden md:flex md:items-center md:gap-6 lg:gap-8"

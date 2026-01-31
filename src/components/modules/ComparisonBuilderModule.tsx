@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { calculateComparison } from "@/lib/comparison-engine";
 import { ALL_COMPARISON_UNITS } from "@/lib/data";
 import { formatCurrency, formatNumber } from "@/lib/format";
-import { DataFreshnessIndicator } from "@/components/budget/DataFreshnessIndicator";
 import {
   Select,
   SelectContent,
@@ -24,8 +23,6 @@ import type { ComparisonUnit } from "@/types/comparison";
 interface ComparisonBuilderModuleProps {
   /** Available budget items to select from */
   budgetItems: BudgetItem[];
-  /** Last updated timestamp for data freshness indicator */
-  lastUpdated: Date;
   /** Initial budget item ID to select */
   initialBudgetItemId?: string;
   /** Initial unit ID to select */
@@ -57,7 +54,6 @@ const DEFAULT_UNIT_ID = "teacher-salary";
 export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
   function ComparisonBuilderModule({
     budgetItems,
-    lastUpdated,
     initialBudgetItemId = DEFAULT_BUDGET_ITEM.id,
     initialUnitId = DEFAULT_UNIT_ID,
     onSelectionChange,
@@ -283,15 +279,6 @@ export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
               Share This
             </Button>
           </div>
-        </div>
-
-        {/* Data Source */}
-        <div className="mt-4 flex justify-center">
-          <DataFreshnessIndicator
-            lastUpdated={lastUpdated}
-            source="USAspending.gov"
-            sourceUrl="https://www.usaspending.gov"
-          />
         </div>
       </div>
     );

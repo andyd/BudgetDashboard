@@ -121,7 +121,6 @@ export const HomePageClient = memo<HomePageClientProps>(
         mainModule={
           <ComparisonBuilderModule
             budgetItems={budgetItems}
-            lastUpdated={lastUpdated}
             initialBudgetItemId={selectedBudgetItemId}
             initialUnitId={selectedUnitId}
             onSelectionChange={handleSelectionChange}

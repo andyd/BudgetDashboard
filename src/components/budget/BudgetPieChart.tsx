@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, memo } from "react";
 import {
   PieChart,
   Pie,
@@ -105,7 +105,10 @@ interface CustomTooltipProps {
   }>;
 }
 
-function CustomTooltip({ active, payload }: CustomTooltipProps) {
+const CustomTooltip = memo(function CustomTooltip({
+  active,
+  payload,
+}: CustomTooltipProps) {
   if (!active || !payload || !payload.length) {
     return null;
   }
@@ -133,7 +136,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Custom legend component
@@ -150,7 +153,7 @@ interface CustomLegendProps {
   onItemHover?: (itemId: string | null) => void;
 }
 
-function CustomLegend({
+const CustomLegend = memo(function CustomLegend({
   payload,
   onItemClick,
   onItemHover,
@@ -187,7 +190,7 @@ function CustomLegend({
       )}
     </div>
   );
-}
+});
 
 /**
  * Active shape renderer for hover effect
@@ -236,77 +239,201 @@ function renderActiveShape(props: any) {
 /**
  * Minimum percentage threshold for showing labels
  * Segments smaller than this will not have callout labels
+ * Higher threshold on mobile to reduce clutter
  */
-const LABEL_MIN_PERCENT = 3;
+const LABEL_MIN_PERCENT_MOBILE = 8;
+const LABEL_MIN_PERCENT_DESKTOP = 3;
 
 /**
- * Custom label renderer with callout lines
- * Shows label with leader line pointing to segment center
+ * Minimum vertical spacing between label groups (in pixels)
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function renderCustomLabel(props: any) {
-  const { cx, cy, midAngle, outerRadius, fill, payload, index } = props;
+const MIN_LABEL_SPACING = 28;
 
-  // Don't render label for small segments
-  if (payload.percentOfTotal < LABEL_MIN_PERCENT) {
-    return null;
-  }
-
-  const RADIAN = Math.PI / 180;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-
-  // Calculate positions for the callout line
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
-
-  // Truncate long names
-  const displayName =
-    payload.name.length > 20
-      ? payload.name.substring(0, 18) + "..."
-      : payload.name;
-
-  return (
-    <g key={`label-${index}`}>
-      {/* Leader line from slice to label */}
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        strokeWidth={1.5}
-        fill="none"
-      />
-      {/* Dot at the slice edge */}
-      <circle cx={sx} cy={sy} r={3} fill={fill} />
-      {/* Category name */}
-      <text
-        x={ex + (cos >= 0 ? 4 : -4)}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#e5e7eb"
-        fontSize={11}
-        fontWeight={500}
-        dominantBaseline="middle"
-      >
-        {displayName}
-      </text>
-      {/* Percentage */}
-      <text
-        x={ex + (cos >= 0 ? 4 : -4)}
-        y={ey + 14}
-        textAnchor={textAnchor}
-        fill="#9ca3af"
-        fontSize={10}
-      >
-        {payload.percentOfTotal.toFixed(1)}%
-      </text>
-    </g>
-  );
+/**
+ * Label position data structure for collision detection
+ */
+interface LabelPosition {
+  index: number;
+  angle: number;
+  y: number;
+  side: "left" | "right";
 }
+
+/**
+ * Adjust label positions to prevent overlaps using collision detection
+ * Spreads labels vertically when they would overlap
+ */
+function adjustLabelPositions(positions: LabelPosition[]): Map<number, number> {
+  const adjusted = new Map<number, number>();
+
+  // Sort by vertical position (y coordinate)
+  const sortedPositions = [...positions].sort((a, b) => a.y - b.y);
+
+  // Process each side separately
+  const leftSide = sortedPositions.filter((p) => p.side === "left");
+  const rightSide = sortedPositions.filter((p) => p.side === "right");
+
+  // Adjust positions for each side
+  [leftSide, rightSide].forEach((sidePositions) => {
+    if (sidePositions.length === 0) return;
+
+    // Start with original positions
+    const newPositions = sidePositions.map((p) => ({ ...p, adjustedY: p.y }));
+
+    // Iteratively resolve collisions
+    let hasCollision = true;
+    let iterations = 0;
+    const maxIterations = 50;
+
+    while (hasCollision && iterations < maxIterations) {
+      hasCollision = false;
+      iterations++;
+
+      for (let i = 0; i < newPositions.length - 1; i++) {
+        const current = newPositions[i];
+        const next = newPositions[i + 1];
+
+        const gap = next.adjustedY - current.adjustedY;
+
+        if (gap < MIN_LABEL_SPACING) {
+          hasCollision = true;
+
+          // Calculate adjustment needed
+          const adjustment = (MIN_LABEL_SPACING - gap) / 2;
+
+          // Push labels apart
+          current.adjustedY -= adjustment;
+          next.adjustedY += adjustment;
+        }
+      }
+    }
+
+    // Store adjusted positions
+    newPositions.forEach((p) => {
+      adjusted.set(p.index, p.adjustedY);
+    });
+  });
+
+  return adjusted;
+}
+
+/**
+ * Custom label renderer with callout lines and collision detection
+ * Shows label with leader line pointing to segment center
+ * Labels are automatically spread apart to avoid overlaps
+ */
+const renderCustomLabel = (() => {
+  let labelPositions: LabelPosition[] = [];
+  let adjustedPositions: Map<number, number> | null = null;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function renderLabel(props: any) {
+    const { cx, cy, midAngle, outerRadius, fill, payload, index, viewBox } =
+      props;
+
+    // Determine if mobile based on viewport width
+    const isMobile = viewBox?.width < 640;
+    const minPercent = isMobile
+      ? LABEL_MIN_PERCENT_MOBILE
+      : LABEL_MIN_PERCENT_DESKTOP;
+
+    // Don't render label for small segments
+    if (payload.percentOfTotal < minPercent) {
+      return null;
+    }
+
+    const RADIAN = Math.PI / 180;
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+
+    // Adjust callout line length based on screen size
+    const lineOffset = isMobile ? 8 : 10;
+    const lineLength = isMobile ? 20 : 30;
+    const horizontalExtension = isMobile ? 15 : 22;
+
+    // Calculate positions for the callout line
+    const sx = cx + (outerRadius + lineOffset) * cos;
+    const sy = cy + (outerRadius + lineOffset) * sin;
+    const mx = cx + (outerRadius + lineLength) * cos;
+    const my = cy + (outerRadius + lineLength) * sin;
+
+    // On first item of each render, reset and collect positions
+    if (index === 0) {
+      labelPositions = [];
+      adjustedPositions = null;
+    }
+
+    // Collect all label positions during first pass
+    if (!adjustedPositions) {
+      labelPositions.push({
+        index,
+        angle: midAngle,
+        y: my,
+        side: cos >= 0 ? "right" : "left",
+      });
+
+      // After collecting all positions, calculate adjustments
+      // We detect completion by checking if this is the last expected render
+      if (labelPositions.length > index) {
+        adjustedPositions = adjustLabelPositions(labelPositions);
+      }
+    }
+
+    // Get adjusted Y position or use original
+    const adjustedY = adjustedPositions?.get(index) ?? my;
+    const ex = mx + (cos >= 0 ? 1 : -1) * horizontalExtension;
+    const ey = adjustedY;
+    const textAnchor = cos >= 0 ? "start" : "end";
+
+    // Truncate long names - shorter on mobile
+    const maxLength = isMobile ? 12 : 20;
+    const displayName =
+      payload.name.length > maxLength
+        ? payload.name.substring(0, maxLength - 2) + "..."
+        : payload.name;
+
+    // Font sizes - smaller on mobile
+    const nameFontSize = isMobile ? 9 : 11;
+    const percentFontSize = isMobile ? 8 : 10;
+
+    return (
+      <g key={`label-${index}`}>
+        {/* Leader line from slice to label with elbow at adjusted position */}
+        <path
+          d={`M${sx},${sy}L${mx},${my}L${mx},${adjustedY}L${ex},${ey}`}
+          stroke={fill}
+          strokeWidth={isMobile ? 1 : 1.5}
+          fill="none"
+          opacity={0.8}
+        />
+        {/* Dot at the slice edge */}
+        <circle cx={sx} cy={sy} r={isMobile ? 2 : 3} fill={fill} />
+        {/* Category name */}
+        <text
+          x={ex + (cos >= 0 ? 4 : -4)}
+          y={ey}
+          textAnchor={textAnchor}
+          fill="#e5e7eb"
+          fontSize={nameFontSize}
+          fontWeight={500}
+          dominantBaseline="middle"
+        >
+          {displayName}
+        </text>
+        {/* Percentage */}
+        <text
+          x={ex + (cos >= 0 ? 4 : -4)}
+          y={ey + (isMobile ? 11 : 14)}
+          textAnchor={textAnchor}
+          fill="#9ca3af"
+          fontSize={percentFontSize}
+        >
+          {payload.percentOfTotal.toFixed(1)}%
+        </text>
+      </g>
+    );
+  };
+})();
 
 /**
  * BudgetPieChart Component

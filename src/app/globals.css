@@ -202,6 +202,16 @@
   max-width: 1400px;
 }
 
+/* Hide scrollbar while maintaining scroll functionality */
+@utility no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
 /* Keyframe animations */
 @keyframes fade-in {
   from { opacity: 0; }

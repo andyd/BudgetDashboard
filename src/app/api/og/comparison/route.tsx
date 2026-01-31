@@ -1,7 +1,7 @@
-import { ImageResponse } from "next/og";
+import { ImageResponse } from "@vercel/og";
 import { NextRequest } from "next/server";
-import { getItemById } from "@/lib/data/budget-items";
-import { getUnitById } from "@/lib/data/comparison-units";
+import { getItemById, getUnitById } from "@/lib/data";
+import { calculateComparison } from "@/lib/comparison-engine";
 
 export const runtime = "edge";
 
@@ -9,30 +9,30 @@ export const runtime = "edge";
  * Generates dynamic OpenGraph images for budget comparisons
  *
  * Query parameters:
- * - spending: Budget spending item ID (required)
- * - unit: Comparison unit ID (required)
+ * - budgetId: Budget item ID (required)
+ * - unitId: Comparison unit ID (required)
  *
  * Example:
- * /api/og/comparison?spending=dept-defense&unit=teacher-salary
+ * /api/og/comparison?budgetId=dept-defense&unitId=teacher-salary
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const spendingId = searchParams.get("spending");
-    const unitId = searchParams.get("unit");
+    const budgetId = searchParams.get("budgetId");
+    const unitId = searchParams.get("unitId");
 
-    if (!spendingId || !unitId) {
-      return new Response("Missing required parameters: spending and unit", {
+    if (!budgetId || !unitId) {
+      return new Response("Missing required parameters: budgetId and unitId", {
         status: 400,
       });
     }
 
-    const spendingItem = getItemById(spendingId);
+    const budgetItem = getItemById(budgetId);
     const comparisonUnit = getUnitById(unitId);
 
-    if (!spendingItem) {
-      return new Response(`Spending item not found: ${spendingId}`, {
+    if (!budgetItem) {
+      return new Response(`Budget item not found: ${budgetId}`, {
         status: 404,
       });
     }
@@ -43,27 +43,26 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Calculate the comparison
-    const unitCost = comparisonUnit.cost ?? comparisonUnit.costPerUnit ?? 0;
-    const unitCount = Math.floor(spendingItem.amount / unitCost);
+    // Calculate the comparison using the comparison engine
+    const comparison = calculateComparison(budgetItem.amount, comparisonUnit);
 
     // Format the spending amount
-    const formattedAmount = formatCurrency(spendingItem.amount);
-
-    // Format the unit count
-    const formattedCount = formatCompactNumber(unitCount);
+    const formattedAmount = formatCurrency(budgetItem.amount);
 
     // Get the unit name (singular or plural based on count)
     const unitName =
-      unitCount === 1
+      comparison.count === 1
         ? comparisonUnit.nameSingular || comparisonUnit.name
         : comparisonUnit.name;
 
-    // Create the headline
-    const headline = `${spendingItem.name} = ${formatNumber(unitCount)} ${capitalizeFirst(unitName)}`;
+    // Format the unit count for display
+    const formattedCount = formatCompactNumber(comparison.count);
 
-    // Create the amounts line
-    const amountsLine = `${formattedAmount} = ${formattedCount} ${comparisonUnit.icon || ""}`;
+    // Create the headline with budget item name and count
+    const headline = `${budgetItem.name}`;
+
+    // Create the comparison line
+    const comparisonLine = `= ${formatNumber(comparison.count)} ${capitalizeFirst(unitName)}`;
 
     // Brand colors matching the dashboard
     const colors = {
@@ -128,14 +127,14 @@ export async function GET(request: NextRequest) {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "32px",
+            gap: "24px",
             maxWidth: "1040px",
           }}
         >
-          {/* Headline */}
+          {/* Budget Item Name */}
           <div
             style={{
-              fontSize: "56px",
+              fontSize: "52px",
               fontWeight: "700",
               color: colors.text,
               lineHeight: "1.15",
@@ -147,19 +146,37 @@ export async function GET(request: NextRequest) {
             {headline}
           </div>
 
-          {/* Amounts */}
+          {/* Count Display */}
           <div
             style={{
-              fontSize: "40px",
-              fontWeight: "600",
-              color: colors.accent,
+              fontSize: "72px",
+              fontWeight: "800",
+              color: colors.success,
+              letterSpacing: "-0.02em",
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+            }}
+          >
+            {comparisonUnit.icon && (
+              <span style={{ fontSize: "64px" }}>{comparisonUnit.icon}</span>
+            )}
+            {comparisonLine}
+          </div>
+
+          {/* Amount Subtitle */}
+          <div
+            style={{
+              fontSize: "32px",
+              fontWeight: "500",
+              color: colors.textSecondary,
               letterSpacing: "-0.01em",
               display: "flex",
               alignItems: "center",
-              gap: "12px",
+              gap: "8px",
             }}
           >
-            {amountsLine}
+            {formattedAmount} ({formattedCount} {unitName})
           </div>
         </div>
 
@@ -187,7 +204,7 @@ export async function GET(request: NextRequest) {
                 display: "flex",
               }}
             >
-              Sources: {spendingItem.source} | {comparisonUnit.source}
+              Sources: {budgetItem.source} | {comparisonUnit.source}
             </div>
             <div
               style={{

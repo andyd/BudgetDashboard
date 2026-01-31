@@ -8,9 +8,10 @@ export default defineConfig({
     postcss: {},
   },
   test: {
-    environment: "node",
+    environment: "jsdom",
     globals: true,
     css: false,
+    setupFiles: ["./src/__tests__/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["node_modules", ".next", "tests/**/*"],
     coverage: {

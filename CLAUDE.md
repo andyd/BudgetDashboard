@@ -1,4 +1,6 @@
-# CLAUDE.md - Federal Budget Dashboard
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Tracking
 
@@ -13,7 +15,79 @@
 
 ## Overview
 
-A living dashboard showing US federal spending with side-by-side comparisons that translate billions into tangible terms. See the design doc at `docs/plans/2026-01-29-federal-budget-dashboard-design.md`.
+A living dashboard showing US federal spending with side-by-side comparisons that translate billions into tangible terms. Users can compare budget items like "Defense Department spending" to relatable units like "teacher salaries" or "hospital beds."
+
+## Commands
+
+```bash
+pnpm dev              # Development server (Turbopack)
+pnpm build            # Production build
+pnpm lint             # ESLint
+pnpm type-check       # TypeScript check
+pnpm test             # Playwright E2E tests
+pnpm test:unit        # Vitest unit tests
+pnpm test:unit:watch  # Vitest watch mode
+
+# Run single tests
+npx playwright test tests/e2e/homepage.spec.ts
+npx playwright test -g "test name"
+pnpm test:unit -- src/lib/__tests__/comparison-engine.test.ts
+```
+
+## Architecture
+
+### Core Data Model
+
+The app has two main data types that get combined to create comparisons:
+
+1. **Budget Items** (`src/lib/data/budget-items/`) - Federal spending amounts
+   - Departments (HHS, Defense, etc.)
+   - Programs (Medicare, SNAP, etc.)
+   - Current events (specific policy spending)
+
+2. **Comparison Units** (`src/lib/data/comparison-units/`) - Tangible cost references
+   - Categories: education, healthcare, housing, transportation, income, veterans, etc.
+   - Each unit has `costPerUnit`, `name`, `nameSingular`, `pluralName`
+
+### Comparison Engine (`src/lib/comparison-engine.ts`)
+
+Core logic that:
+
+- Converts dollar amounts to unit counts via `calculateComparison(amount, unit)`
+- Scores comparisons for memorability via `calculateImpactScore()` (prefers round numbers, 1-100 range)
+- Auto-selects best units via `findBestComparison(amount, units)`
+- Returns diverse alternatives via `getAlternatives()`
+
+### State Management
+
+- **Budget Store** (`src/stores/budget-store.ts`) - Zustand store for treemap navigation
+  - Handles drill-down path, breadcrumb navigation
+  - Syncs navigation state to URL query params
+- **Comparison Store** (`src/stores/comparison-store.ts`) - Comparison builder state
+
+### Key Routes
+
+| Route                            | Purpose                                           |
+| -------------------------------- | ------------------------------------------------- |
+| `/`                              | Homepage with budget treemap + comparison builder |
+| `/compare`                       | Full comparison builder page                      |
+| `/compare/[spendingId]/[unitId]` | Shareable comparison page                         |
+| `/budget/[...path]`              | Budget drill-down navigation                      |
+| `/embed/[budgetId]/[unitId]`     | Embeddable comparison widget                      |
+| `/api/compare`                   | Comparison calculation API                        |
+| `/api/budget/search`             | Budget item search                                |
+| `/api/units/search`              | Comparison unit search                            |
+
+### Component Organization
+
+- `components/budget/` - Budget visualization (BudgetTreemap, DrillDownPanel, SpotlightPanel)
+- `components/comparison/` - Comparison display (ComparisonCard, ComparisonBuilder)
+- `components/comparison-builder/` - Smart Comparison Builder with browse modals
+- `components/ui/` - shadcn/ui components
+
+## Data Sources
+
+Budget data currently uses static mock data in `src/lib/data/`. The `src/lib/usaspending.ts` client is prepared for future integration with the USAspending API.
 
 ## Setup
 
@@ -23,82 +97,17 @@ A living dashboard showing US federal spending with side-by-side comparisons tha
    cp env.example .env.local
    ```
 
-2. Fill in required values in `.env.local`:
-   - `DATABASE_URL` - Neon PostgreSQL connection string
-   - `ADMIN_PASSWORD` - Admin panel password (min 8 chars)
-
-3. See `docs/environment-setup.md` for full environment variable documentation
-
-## Commands
-
-```bash
-pnpm dev          # Development server (Turbopack)
-pnpm build        # Production build
-pnpm lint         # ESLint
-pnpm type-check   # TypeScript check
-pnpm test         # Playwright E2E tests
-pnpm test:unit    # Vitest unit tests
-pnpm db:push      # Push schema to database
-pnpm db:studio    # Drizzle Studio GUI
-```
-
-## Architecture
-
-```
-src/
-├── app/
-│   ├── page.tsx                    # Landing page (budget viz + comparisons)
-│   ├── budget/[...path]/page.tsx   # Drill-down routes
-│   ├── compare/[id]/page.tsx       # Shareable comparison page
-│   ├── admin/                      # Admin interface
-│   └── api/
-│       ├── budget/                 # Budget data endpoints
-│       ├── comparisons/            # Comparison CRUD
-│       └── units/                  # Comparison units
-├── components/
-│   ├── budget/                     # Budget visualization components
-│   │   ├── BudgetTreemap.tsx       # D3.js treemap
-│   │   ├── BudgetBreadcrumb.tsx    # Navigation breadcrumb
-│   │   ├── SpotlightPanel.tsx      # Info cards
-│   │   └── DrillDownPanel.tsx      # Drill-down UI
-│   ├── comparison/                 # Comparison components
-│   │   ├── ComparisonCard.tsx      # Single comparison display
-│   │   ├── ComparisonBuilder.tsx   # Build your own
-│   │   ├── FeaturedCarousel.tsx    # Rotating featured
-│   │   └── ShareButton.tsx         # Social sharing
-│   └── ui/                         # shadcn/ui components
-├── lib/
-│   ├── env.ts                      # Type-safe environment variables (Zod)
-│   ├── schema.ts                   # Drizzle schema
-│   ├── budget-data.ts              # Budget data utilities
-│   ├── unit-converter.ts           # Dollar to unit conversion
-│   └── usaspending.ts              # USAspending API client
-├── stores/
-│   ├── budget-store.ts             # Zustand budget state
-│   └── comparison-store.ts         # Zustand comparison state
-└── types/
-    └── budget.ts                   # TypeScript types
-```
-
-## Key Components
-
-- **BudgetTreemap** - D3.js treemap showing budget hierarchy
-- **ComparisonCard** - Displays a single comparison with sources
-- **ComparisonBuilder** - "Compare X to Y" interface
-- **SpotlightPanel** - Editorial explainer cards
-
-## Data Flow
-
-1. USAspending API → Backend sync job → PostgreSQL
-2. PostgreSQL → API routes → React components
-3. Admin panel → Editorial content → Featured comparisons
+2. Fill in required values:
+   - `DATABASE_URL` - Neon PostgreSQL connection string (optional for dev)
+   - `ADMIN_PASSWORD` - Admin panel password
 
 ## Tech Stack
 
-- Next.js 15 (App Router + Turbopack)
-- TypeScript strict
+- Next.js 16 (App Router + Turbopack)
+- React 19 with TypeScript strict
 - Tailwind CSS 4 + shadcn/ui
 - D3.js (treemap visualization)
 - Framer Motion (animations)
 - Zustand (state management)
 - Drizzle ORM + PostgreSQL
+- Vitest (unit) + Playwright (E2E)

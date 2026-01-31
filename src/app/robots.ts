@@ -1,18 +1,14 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || 'https://budget-dashboard.vercel.app';
-
   return {
     rules: [
       {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/admin/*', '/api/*'],
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/admin", "/api"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: "https://budgetdashboard.com/sitemap.xml",
   };
 }

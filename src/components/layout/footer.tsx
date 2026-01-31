@@ -1,38 +1,39 @@
-import Link from 'next/link';
-import { Github, ExternalLink } from 'lucide-react';
+import Link from "next/link";
+import { Github, ExternalLink } from "lucide-react";
 
 const navigation = {
   about: [
-    { name: 'About', href: '/about' },
-    { name: 'Methodology', href: '/methodology' },
-    { name: 'Contact', href: '/contact' },
+    { name: "About", href: "/about" },
+    { name: "Methodology", href: "/methodology" },
+    { name: "Data Sources", href: "/sources" },
+    { name: "Contact", href: "/contact" },
   ],
   legal: [
-    { name: 'Privacy', href: '/privacy' },
-    { name: 'Terms', href: '/terms' },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
   ],
   dataSources: [
     {
-      name: 'USAspending.gov',
-      href: 'https://www.usaspending.gov',
-      description: 'Official source of federal spending data',
+      name: "USAspending.gov",
+      href: "https://www.usaspending.gov",
+      description: "Official source of federal spending data",
     },
     {
-      name: 'Congressional Budget Office',
-      href: 'https://www.cbo.gov',
-      description: 'Budget analysis and projections',
+      name: "Congressional Budget Office",
+      href: "https://www.cbo.gov",
+      description: "Budget analysis and projections",
     },
     {
-      name: 'Office of Management and Budget',
-      href: 'https://www.whitehouse.gov/omb',
-      description: 'Federal budget preparation',
+      name: "Office of Management and Budget",
+      href: "https://www.whitehouse.gov/omb",
+      description: "Federal budget preparation",
     },
   ],
 };
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const lastUpdated = 'January 2026'; // TODO: Make dynamic based on data sync
+  const lastUpdated = "January 2026"; // TODO: Make dynamic based on data sync
 
   return (
     <footer className="bg-muted/30 border-t">
@@ -42,13 +43,18 @@ export function Footer() {
           <div className="lg:col-span-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="bg-primary h-8 w-8 rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">$</span>
+                <span className="text-primary-foreground text-xs font-bold">
+                  $
+                </span>
               </div>
-              <span className="text-lg font-bold">Federal Budget Dashboard</span>
+              <span className="text-lg font-bold">
+                Federal Budget Dashboard
+              </span>
             </Link>
             <p className="text-muted-foreground mt-4 text-sm leading-relaxed max-w-sm">
-              A living dashboard that translates federal spending into tangible terms.
-              Explore billions through side-by-side comparisons that make the numbers meaningful.
+              A living dashboard that translates federal spending into tangible
+              terms. Explore billions through side-by-side comparisons that make
+              the numbers meaningful.
             </p>
             <div className="mt-6 flex items-center gap-4">
               <a
@@ -80,7 +86,9 @@ export function Footer() {
                     <ExternalLink className="h-3.5 w-3.5 mt-0.5 flex-shrink-0 opacity-60 group-hover:opacity-100" />
                     <div>
                       <div className="font-medium">{source.name}</div>
-                      <div className="text-xs opacity-75">{source.description}</div>
+                      <div className="text-xs opacity-75">
+                        {source.description}
+                      </div>
                     </div>
                   </a>
                 </li>
@@ -134,8 +142,8 @@ export function Footer() {
         <div className="border-border mt-12 border-t pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
             <p>
-              © {currentYear} Federal Budget Dashboard. This is an independent project
-              not affiliated with any government agency.
+              © {currentYear} Federal Budget Dashboard. This is an independent
+              project not affiliated with any government agency.
             </p>
             <p className="flex items-center gap-1">
               Built with transparency

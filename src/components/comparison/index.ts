@@ -4,20 +4,57 @@
  * Components for building and displaying budget comparisons
  */
 
-export { ComparisonBuilder } from './ComparisonBuilder';
+export { CategoryFilter } from "./CategoryFilter";
 
-export { ComparisonCard } from './ComparisonCard';
+export { ComparisonBuilder } from "./ComparisonBuilder";
 
-export { ComparisonCardSkeleton } from './ComparisonCardSkeleton';
+export { ComparisonCard } from "./ComparisonCard";
 
-export { ComparisonPresets } from './ComparisonPresets';
+export { ComparisonCardSkeleton } from "./ComparisonCardSkeleton";
 
-export { ComparisonResult } from './ComparisonResult';
+export { ComparisonPresets } from "./ComparisonPresets";
 
-export { FeaturedCarousel } from './FeaturedCarousel';
+export { ComparisonResult } from "./ComparisonResult";
 
-export { ShareButton } from './ShareButton';
+export { ComparisonStats } from "./ComparisonStats";
 
-export { ShareModal } from './ShareModal';
+export { FeaturedCarousel } from "./FeaturedCarousel";
 
-export { UnitSelector } from './UnitSelector';
+export { ShareButton } from "./ShareButton";
+
+export { ShareModal } from "./ShareModal";
+
+export { UnitSelector } from "./UnitSelector";
+
+export { SearchableUnitSelect } from "./SearchableUnitSelect";
+
+export { ComparisonGrid } from "./ComparisonGrid";
+export type { ComparisonGridItem } from "./ComparisonGrid";
+
+export { ComparisonCardMini } from "./ComparisonCardMini";
+
+export {
+  ComparisonHistory,
+  addToComparisonHistory,
+  clearComparisonHistory,
+} from "./ComparisonHistory";
+export type { ComparisonHistoryItem } from "./ComparisonHistory";
+
+export { PrintableComparison } from "./PrintableComparison";
+
+export { default as ComparisonExplanation } from "./ComparisonExplanation";
+
+export { QuickCompare } from "./QuickCompare";
+
+export { FavoriteButton } from "./FavoriteButton";
+
+export { ComparisonCalculator } from "./ComparisonCalculator";
+
+export { PerCapitaCalculator } from "./PerCapitaCalculator";
+
+export { UnitCostBreakdown } from "./UnitCostBreakdown";
+export type {
+  CostBreakdownItem,
+  UnitWithBreakdown,
+  UnitCostBreakdownProps,
+} from "./UnitCostBreakdown";

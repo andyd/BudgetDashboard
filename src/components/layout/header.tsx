@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { ThemeToggle } from '@/components/common/theme-toggle';
-import { Separator } from '@/components/ui/separator';
+import { useState } from "react";
+import Link from "next/link";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 const navigationLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Explore', href: '/explore' },
-  { name: 'Methodology', href: '/methodology' },
-  { name: 'About', href: '/about' },
+  { name: "Home", href: "/" },
+  { name: "Explore", href: "/explore" },
+  { name: "Methodology", href: "/methodology" },
+  { name: "About", href: "/about" },
 ];
 
 export function Header() {
@@ -45,14 +44,8 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex md:items-center md:gap-2">
-            <ThemeToggle />
-          </div>
-
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle />
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -87,14 +80,6 @@ export function Header() {
                       </Link>
                     ))}
                   </nav>
-
-                  {/* Mobile Footer */}
-                  <div className="mt-auto pt-6 border-t">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Theme</span>
-                      <ThemeToggle />
-                    </div>
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>

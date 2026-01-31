@@ -1,57 +1,50 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState, useMemo } from 'react';
-import { motion, AnimatePresence } from '@/lib/framer-client';
-import { pie, arc, type PieArcDatum } from 'd3-shape';
-import type { BudgetHierarchy } from '@/types/budget';
-
-/**
- * Category color scheme for budget visualization
- */
-const CATEGORY_COLORS: Record<string, string> = {
-  defense: '#ef4444',
-  military: '#ef4444',
-  'health and human services': '#3b82f6',
-  healthcare: '#3b82f6',
-  'social security': '#8b5cf6',
-  'social security administration': '#8b5cf6',
-  treasury: '#10b981',
-  'department of the treasury': '#10b981',
-  agriculture: '#84cc16',
-  education: '#f59e0b',
-  'veterans affairs': '#ec4899',
-  transportation: '#06b6d4',
-  'homeland security': '#f97316',
-  energy: '#eab308',
-  'housing and urban development': '#6366f1',
-  justice: '#78716c',
-  'department of justice': '#78716c',
-  state: '#14b8a6',
-  'department of state': '#14b8a6',
-  interior: '#22c55e',
-  commerce: '#a855f7',
-  labor: '#0ea5e9',
-  other: '#64748b',
-  default: '#94a3b8',
-};
+import { useMemo, useState, useCallback } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  Sector,
+} from "recharts";
+import type { BudgetHierarchy, BudgetItem, Department } from "@/types/budget";
+import { cn } from "@/lib/utils";
 
 /**
- * Get color for a category with fallback
+ * Distinct color palette for pie chart segments
+ * 20 visually distinct colors that work well on dark backgrounds
  */
-function getCategoryColor(name: string): string {
-  const normalizedName = name.toLowerCase();
+const DISTINCT_COLORS = [
+  { primary: "#3B82F6", hover: "#60A5FA" }, // blue
+  { primary: "#EF4444", hover: "#F87171" }, // red
+  { primary: "#10B981", hover: "#34D399" }, // emerald
+  { primary: "#F59E0B", hover: "#FBBF24" }, // amber
+  { primary: "#8B5CF6", hover: "#A78BFA" }, // violet
+  { primary: "#EC4899", hover: "#F472B6" }, // pink
+  { primary: "#06B6D4", hover: "#22D3EE" }, // cyan
+  { primary: "#84CC16", hover: "#A3E635" }, // lime
+  { primary: "#F97316", hover: "#FB923C" }, // orange
+  { primary: "#6366F1", hover: "#818CF8" }, // indigo
+  { primary: "#14B8A6", hover: "#2DD4BF" }, // teal
+  { primary: "#E11D48", hover: "#FB7185" }, // rose
+  { primary: "#22C55E", hover: "#4ADE80" }, // green
+  { primary: "#A855F7", hover: "#C084FC" }, // purple
+  { primary: "#0EA5E9", hover: "#38BDF8" }, // sky
+  { primary: "#EAB308", hover: "#FCD34D" }, // yellow
+  { primary: "#D946EF", hover: "#E879F9" }, // fuchsia
+  { primary: "#64748B", hover: "#94A3B8" }, // slate
+  { primary: "#78716C", hover: "#A8A29E" }, // stone
+  { primary: "#71717A", hover: "#A1A1AA" }, // zinc
+];
 
-  if (CATEGORY_COLORS[normalizedName]) {
-    return CATEGORY_COLORS[normalizedName];
-  }
-
-  for (const [key, color] of Object.entries(CATEGORY_COLORS)) {
-    if (normalizedName.includes(key) || key.includes(normalizedName)) {
-      return color;
-    }
-  }
-
-  return CATEGORY_COLORS.default || '#94a3b8';
+/**
+ * Get color by index for guaranteed distinct colors
+ */
+function getColorByIndex(index: number): { primary: string; hover: string } {
+  return DISTINCT_COLORS[index % DISTINCT_COLORS.length];
 }
 
 /**
@@ -65,285 +58,479 @@ function formatCurrency(amount: number): string {
   return `$${amount.toFixed(0)}`;
 }
 
-interface PieSlice {
+/**
+ * Pie slice data structure for Recharts
+ */
+interface PieSliceData {
   id: string;
   name: string;
   amount: number;
   percentOfParent: number | null;
   percentOfTotal: number;
   color: string;
+  hoverColor: string;
 }
 
-interface BudgetPieChartProps {
+/**
+ * Props for the BudgetPieChart component
+ */
+export interface BudgetPieChartProps {
+  /** Budget hierarchy data to visualize */
   data: BudgetHierarchy;
+  /** Callback when a slice is clicked for drill-down */
+  onItemClick?: (itemId: string, item: BudgetItem | Department) => void;
+  /** Callback when a slice is hovered for highlighting */
+  onItemHover?: (itemId: string | null) => void;
+  /** Currently selected item ID (for highlighting) */
+  selectedItemId?: string | null;
+  /** Additional CSS classes */
+  className?: string;
+  /** Chart height (default: 400) */
+  height?: number;
+  /** Show legend (default: true) */
+  showLegend?: boolean;
+  /** Inner radius ratio for donut style (0-1, default: 0.4) */
+  innerRadiusRatio?: number;
+  /** Outer radius ratio (0-1, default: 0.8) */
+  outerRadiusRatio?: number;
+}
+
+/**
+ * Custom tooltip component for the pie chart
+ */
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: PieSliceData;
+  }>;
+}
+
+function CustomTooltip({ active, payload }: CustomTooltipProps) {
+  if (!active || !payload || !payload.length) {
+    return null;
+  }
+
+  const data = payload[0].payload;
+
+  return (
+    <div className="rounded-lg border border-border bg-popover px-3 py-2 shadow-lg">
+      <div className="mb-1 text-sm font-semibold text-popover-foreground">
+        {data.name}
+      </div>
+      <div className="mb-1 text-lg font-bold text-popover-foreground">
+        {formatCurrency(data.amount)}
+      </div>
+      <div className="text-xs text-muted-foreground">
+        {data.percentOfTotal.toFixed(1)}% of total budget
+      </div>
+      {data.percentOfParent !== null && (
+        <div className="text-xs text-muted-foreground">
+          {data.percentOfParent.toFixed(1)}% of parent
+        </div>
+      )}
+      <div className="mt-2 text-xs text-muted-foreground/80">
+        Click to explore
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Custom legend component
+ */
+interface CustomLegendProps {
+  payload?: Array<{
+    value: string;
+    color: string;
+    payload: {
+      id: string;
+    };
+  }>;
   onItemClick?: (itemId: string) => void;
   onItemHover?: (itemId: string | null) => void;
-  selectedItemId?: string | null;
-  className?: string;
 }
 
+function CustomLegend({
+  payload,
+  onItemClick,
+  onItemHover,
+}: CustomLegendProps) {
+  if (!payload) return null;
+
+  // Show top 8 items
+  const visibleItems = payload.slice(0, 8);
+  const remainingCount = payload.length - 8;
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2 px-2 pt-4">
+      {visibleItems.map((entry) => (
+        <button
+          key={entry.payload.id}
+          className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          onClick={() => onItemClick?.(entry.payload.id)}
+          onMouseEnter={() => onItemHover?.(entry.payload.id)}
+          onMouseLeave={() => onItemHover?.(null)}
+        >
+          <span
+            className="h-2.5 w-2.5 rounded-full flex-shrink-0"
+            style={{ backgroundColor: entry.color }}
+          />
+          <span className="text-muted-foreground truncate max-w-[120px]">
+            {entry.value}
+          </span>
+        </button>
+      ))}
+      {remainingCount > 0 && (
+        <span className="px-2 py-1 text-xs text-muted-foreground">
+          +{remainingCount} more
+        </span>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Active shape renderer for hover effect
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function renderActiveShape(props: any) {
+  const {
+    cx,
+    cy,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+  } = props;
+
+  return (
+    <g>
+      {/* Expanded outer slice */}
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius + 8}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={payload.hoverColor}
+        stroke="white"
+        strokeWidth={2}
+      />
+      {/* Inner slice for depth effect */}
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius - 2}
+        outerRadius={innerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+    </g>
+  );
+}
+
+/**
+ * Minimum percentage threshold for showing labels
+ * Segments smaller than this will not have callout labels
+ */
+const LABEL_MIN_PERCENT = 3;
+
+/**
+ * Custom label renderer with callout lines
+ * Shows label with leader line pointing to segment center
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function renderCustomLabel(props: any) {
+  const { cx, cy, midAngle, outerRadius, fill, payload, index } = props;
+
+  // Don't render label for small segments
+  if (payload.percentOfTotal < LABEL_MIN_PERCENT) {
+    return null;
+  }
+
+  const RADIAN = Math.PI / 180;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+
+  // Calculate positions for the callout line
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? "start" : "end";
+
+  // Truncate long names
+  const displayName =
+    payload.name.length > 20
+      ? payload.name.substring(0, 18) + "..."
+      : payload.name;
+
+  return (
+    <g key={`label-${index}`}>
+      {/* Leader line from slice to label */}
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        strokeWidth={1.5}
+        fill="none"
+      />
+      {/* Dot at the slice edge */}
+      <circle cx={sx} cy={sy} r={3} fill={fill} />
+      {/* Category name */}
+      <text
+        x={ex + (cos >= 0 ? 4 : -4)}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#e5e7eb"
+        fontSize={11}
+        fontWeight={500}
+        dominantBaseline="middle"
+      >
+        {displayName}
+      </text>
+      {/* Percentage */}
+      <text
+        x={ex + (cos >= 0 ? 4 : -4)}
+        y={ey + 14}
+        textAnchor={textAnchor}
+        fill="#9ca3af"
+        fontSize={10}
+      >
+        {payload.percentOfTotal.toFixed(1)}%
+      </text>
+    </g>
+  );
+}
+
+/**
+ * BudgetPieChart Component
+ *
+ * A responsive pie/donut chart visualization for budget data using Recharts.
+ * Displays department spending as slices with interactive tooltips and
+ * drill-down capability.
+ *
+ * @example
+ * ```tsx
+ * <BudgetPieChart
+ *   data={budgetData}
+ *   onItemClick={(id, item) => router.push(`/budget/${id}`)}
+ *   onItemHover={(id) => setHighlightedId(id)}
+ * />
+ * ```
+ */
 export function BudgetPieChart({
   data,
   onItemClick,
   onItemHover,
   selectedItemId,
-  className = '',
+  className,
+  height = 400,
+  showLegend = true,
+  innerRadiusRatio = 0.4,
+  outerRadiusRatio = 0.8,
 }: BudgetPieChartProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [hoveredSlice, setHoveredSlice] = useState<PieSlice | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
 
-  // Prepare slice data
-  const sliceData = useMemo<PieSlice[]>(() => {
-    return data.departments.map((dept) => ({
-      id: dept.id,
-      name: dept.name,
-      amount: dept.amount,
-      percentOfParent: dept.percentOfParent,
-      percentOfTotal: (dept.amount / data.totalAmount) * 100,
-      color: getCategoryColor(dept.name),
-    }));
+  // Get budget items from hierarchy (departments or items)
+  const budgetItems = useMemo(() => {
+    if (data.departments && data.departments.length > 0) {
+      return data.departments;
+    }
+    if (data.items && data.items.length > 0) {
+      return data.items;
+    }
+    return [];
   }, [data]);
 
-  // Calculate pie layout
-  const pieData = useMemo(() => {
-    const pieGenerator = pie<PieSlice>()
-      .value((d) => d.amount)
-      .sort((a, b) => b.amount - a.amount)
-      .padAngle(0.02);
+  // Prepare slice data for Recharts with index-based distinct colors
+  const sliceData = useMemo<PieSliceData[]>(() => {
+    const sorted = budgetItems
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        amount: item.amount,
+        percentOfParent: item.percentOfParent,
+        percentOfTotal: (item.amount / data.totalAmount) * 100,
+        color: "", // Will be set below
+        hoverColor: "", // Will be set below
+      }))
+      .sort((a, b) => b.amount - a.amount);
 
-    return pieGenerator(sliceData);
-  }, [sliceData]);
-
-  // Calculate arc generator
-  const { arcGenerator, labelArcGenerator } = useMemo(() => {
-    const size = Math.min(dimensions.width, dimensions.height);
-    const outerRadius = size / 2 - 20;
-    const innerRadius = outerRadius * 0.4; // Donut style
-
-    const arcGen = arc<PieArcDatum<PieSlice>>()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius)
-      .cornerRadius(4);
-
-    const labelArcGen = arc<PieArcDatum<PieSlice>>()
-      .innerRadius(outerRadius * 0.7)
-      .outerRadius(outerRadius * 0.7);
-
-    return { arcGenerator: arcGen, labelArcGenerator: labelArcGen };
-  }, [dimensions]);
-
-  // Update dimensions on resize
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (!containerRef.current) return;
-      const { width, height } = containerRef.current.getBoundingClientRect();
-      setDimensions({ width, height });
-    };
-
-    updateDimensions();
-
-    const resizeObserver = new ResizeObserver(updateDimensions);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+    // Assign distinct colors by index after sorting
+    return sorted.map((item, index) => {
+      const colors = getColorByIndex(index);
+      return {
+        ...item,
+        color: colors.primary,
+        hoverColor: colors.hover,
+      };
     });
-  };
+  }, [budgetItems, data.totalAmount]);
 
-  const handleSliceHover = (slice: PieSlice | null) => {
-    setHoveredSlice(slice);
-    onItemHover?.(slice?.id || null);
-  };
+  // Find the original item for click callback
+  const findOriginalItem = useCallback(
+    (itemId: string): BudgetItem | Department | undefined => {
+      return budgetItems.find((item) => item.id === itemId);
+    },
+    [budgetItems],
+  );
 
-  const handleSliceClick = (sliceId: string) => {
-    onItemClick?.(sliceId);
-  };
+  // Handle slice click
+  const handleSliceClick = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (data: any, index: number) => {
+      const slice = sliceData[index];
+      if (slice && onItemClick) {
+        const originalItem = findOriginalItem(slice.id);
+        if (originalItem) {
+          onItemClick(slice.id, originalItem);
+        }
+      }
+    },
+    [sliceData, onItemClick, findOriginalItem],
+  );
 
-  const shouldShowLabel = (d: PieArcDatum<PieSlice>): boolean => {
-    return d.data.percentOfTotal > 5;
-  };
+  // Handle slice hover
+  const handleSliceEnter = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (_: any, index: number) => {
+      setActiveIndex(index);
+      const slice = sliceData[index];
+      if (slice) {
+        onItemHover?.(slice.id);
+      }
+    },
+    [sliceData, onItemHover],
+  );
 
-  const centerX = dimensions.width / 2;
-  const centerY = dimensions.height / 2;
+  const handleSliceLeave = useCallback(() => {
+    setActiveIndex(undefined);
+    onItemHover?.(null);
+  }, [onItemHover]);
+
+  // Handle legend click
+  const handleLegendClick = useCallback(
+    (itemId: string) => {
+      const originalItem = findOriginalItem(itemId);
+      if (originalItem && onItemClick) {
+        onItemClick(itemId, originalItem);
+      }
+    },
+    [findOriginalItem, onItemClick],
+  );
+
+  // Handle legend hover
+  const handleLegendHover = useCallback(
+    (itemId: string | null) => {
+      if (itemId) {
+        const index = sliceData.findIndex((s) => s.id === itemId);
+        setActiveIndex(index >= 0 ? index : undefined);
+      } else {
+        setActiveIndex(undefined);
+      }
+      onItemHover?.(itemId);
+    },
+    [sliceData, onItemHover],
+  );
+
+  // Find selected index
+  const selectedIndex = useMemo(() => {
+    if (!selectedItemId) return undefined;
+    const index = sliceData.findIndex((s) => s.id === selectedItemId);
+    return index >= 0 ? index : undefined;
+  }, [selectedItemId, sliceData]);
+
+  // Use selected index if no active hover
+  const effectiveActiveIndex = activeIndex ?? selectedIndex;
+
+  if (sliceData.length === 0) {
+    return (
+      <div
+        className={cn(
+          "flex items-center justify-center rounded-lg bg-muted/20",
+          className,
+        )}
+        style={{ height }}
+      >
+        <p className="text-muted-foreground">No budget data available</p>
+      </div>
+    );
+  }
 
   return (
-    <div className={`relative h-full w-full ${className}`}>
-      <div
-        ref={containerRef}
-        className="h-full w-full overflow-hidden rounded-lg bg-white dark:bg-gray-900"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => handleSliceHover(null)}
-      >
-        <svg
-          width={dimensions.width}
-          height={dimensions.height}
-          className="h-full w-full"
-          role="img"
-          aria-label="Budget pie chart visualization"
-        >
-          <g transform={`translate(${centerX}, ${centerY})`}>
-            {pieData.map((d) => {
-              const isSelected = selectedItemId === d.data.id;
-              const isHovered = hoveredSlice?.id === d.data.id;
-              const showLabel = shouldShowLabel(d);
-              const pathD = arcGenerator(d) || '';
-              const labelPosition = labelArcGenerator.centroid(d);
-
-              return (
-                <g key={d.data.id}>
-                  <motion.path
-                    d={pathD}
-                    fill={d.data.color}
-                    stroke={isSelected ? '#ffffff' : 'rgba(255,255,255,0.2)'}
-                    strokeWidth={isSelected ? 3 : 1}
-                    className="cursor-pointer"
-                    onMouseEnter={() => handleSliceHover(d.data)}
-                    onClick={() => handleSliceClick(d.data.id)}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: isHovered ? 1 : 0.85,
-                      scale: isHovered ? 1.02 : 1,
-                    }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${d.data.name}: ${formatCurrency(d.data.amount)}`}
-                  />
-
-                  {showLabel && (
-                    <motion.g
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3, delay: 0.2 }}
-                      className="pointer-events-none"
-                    >
-                      <text
-                        x={labelPosition[0]}
-                        y={labelPosition[1]}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        fill="#ffffff"
-                        className="select-none text-xs font-semibold"
-                        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
-                      >
-                        <tspan x={labelPosition[0]} dy="-0.5em">
-                          {d.data.name.length > 15
-                            ? `${d.data.name.substring(0, 15)}...`
-                            : d.data.name}
-                        </tspan>
-                        <tspan x={labelPosition[0]} dy="1.2em" className="font-bold">
-                          {d.data.percentOfTotal.toFixed(1)}%
-                        </tspan>
-                      </text>
-                    </motion.g>
-                  )}
-                </g>
-              );
-            })}
-
-            {/* Center label showing total */}
-            <motion.g
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <text
-                x={0}
-                y={-10}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-foreground text-lg font-bold"
-              >
-                {formatCurrency(data.totalAmount)}
-              </text>
-              <text
-                x={0}
-                y={15}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-muted-foreground text-xs"
-              >
-                FY {data.fiscalYear}
-              </text>
-            </motion.g>
-          </g>
-        </svg>
-
-        {/* Tooltip */}
-        <AnimatePresence>
-          {hoveredSlice && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.15 }}
-              className="pointer-events-none absolute z-50 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white shadow-lg dark:bg-gray-800"
-              style={{
-                left: mousePosition.x + 16,
-                top: mousePosition.y + 16,
-                transform:
-                  mousePosition.x > dimensions.width - 200
-                    ? 'translateX(-100%)'
-                    : 'none',
-              }}
-            >
-              <div className="mb-1 text-sm font-semibold">
-                {hoveredSlice.name}
-              </div>
-              <div className="mb-1 text-lg font-bold">
-                {formatCurrency(hoveredSlice.amount)}
-              </div>
-              <div className="text-xs text-gray-300">
-                {hoveredSlice.percentOfTotal.toFixed(2)}% of total
-              </div>
-              {hoveredSlice.percentOfParent !== null && (
-                <div className="text-xs text-gray-400">
-                  {hoveredSlice.percentOfParent.toFixed(2)}% of parent
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Legend */}
-      <div className="mt-4 flex flex-wrap justify-center gap-3">
-        {sliceData.slice(0, 8).map((slice) => (
-          <button
-            key={slice.id}
-            className="flex items-center gap-2 rounded-md px-2 py-1 text-xs transition-colors hover:bg-muted/50"
-            onClick={() => handleSliceClick(slice.id)}
-            onMouseEnter={() => handleSliceHover(slice)}
-            onMouseLeave={() => handleSliceHover(null)}
+    <div className={cn("relative w-full", className)}>
+      <ResponsiveContainer width="100%" height={height}>
+        <PieChart>
+          <Pie
+            data={sliceData}
+            cx="50%"
+            cy="50%"
+            innerRadius={`${innerRadiusRatio * 100}%`}
+            outerRadius={`${outerRadiusRatio * 100}%`}
+            paddingAngle={2}
+            dataKey="amount"
+            nameKey="name"
+            onClick={handleSliceClick}
+            onMouseEnter={handleSliceEnter}
+            onMouseLeave={handleSliceLeave}
+            activeIndex={effectiveActiveIndex}
+            activeShape={renderActiveShape}
+            label={renderCustomLabel}
+            labelLine={false}
+            className="cursor-pointer focus-visible:outline-none"
           >
-            <span
-              className="h-3 w-3 rounded-full"
-              style={{ backgroundColor: slice.color }}
+            {sliceData.map((entry, index) => (
+              <Cell
+                key={entry.id}
+                fill={entry.color}
+                stroke="white"
+                strokeWidth={1}
+                className="transition-opacity duration-200"
+                style={{
+                  opacity:
+                    effectiveActiveIndex !== undefined &&
+                    effectiveActiveIndex !== index
+                      ? 0.6
+                      : 1,
+                }}
+              />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} />
+          {showLegend && (
+            <Legend
+              content={
+                <CustomLegend
+                  onItemClick={handleLegendClick}
+                  onItemHover={handleLegendHover}
+                />
+              }
+              verticalAlign="bottom"
             />
-            <span className="text-muted-foreground">
-              {slice.name.length > 20
-                ? `${slice.name.substring(0, 20)}...`
-                : slice.name}
-            </span>
-          </button>
-        ))}
-        {sliceData.length > 8 && (
-          <span className="px-2 py-1 text-xs text-muted-foreground">
-            +{sliceData.length - 8} more
-          </span>
+          )}
+        </PieChart>
+      </ResponsiveContainer>
+
+      {/* Center label showing total */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center"
+        style={{
+          marginTop: showLegend ? -24 : 0,
+        }}
+      >
+        <div className="text-xl font-bold text-foreground sm:text-2xl">
+          {formatCurrency(data.totalAmount)}
+        </div>
+        {data.fiscalYear && (
+          <div className="text-xs text-muted-foreground">
+            FY {data.fiscalYear}
+          </div>
         )}
       </div>
     </div>

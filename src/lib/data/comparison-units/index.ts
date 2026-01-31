@@ -8,6 +8,13 @@
 import type { ComparisonUnit } from "@/types/comparison";
 import { HEALTHCARE_UNITS } from "./healthcare";
 import { HOUSING_UNITS } from "./housing";
+import { EDUCATION_UNITS } from "./education";
+import { FOOD_UNITS } from "./food";
+import { TRANSPORTATION_UNITS } from "./transportation";
+import { INCOME_UNITS } from "./income";
+import { PUBLIC_SERVICES_UNITS } from "./public-services";
+import { VETERANS_UNITS } from "./veterans";
+import { ENVIRONMENT_UNITS } from "./environment";
 
 // Re-export the ComparisonUnit interface from the main types
 export type { ComparisonUnit } from "@/types/comparison";
@@ -21,6 +28,13 @@ export type UnitCategory = ComparisonUnit["category"];
 export const ALL_COMPARISON_UNITS: ComparisonUnit[] = [
   ...HEALTHCARE_UNITS,
   ...HOUSING_UNITS,
+  ...EDUCATION_UNITS,
+  ...FOOD_UNITS,
+  ...TRANSPORTATION_UNITS,
+  ...INCOME_UNITS,
+  ...PUBLIC_SERVICES_UNITS,
+  ...VETERANS_UNITS,
+  ...ENVIRONMENT_UNITS,
 ];
 
 /**
@@ -28,6 +42,13 @@ export const ALL_COMPARISON_UNITS: ComparisonUnit[] = [
  */
 export { HEALTHCARE_UNITS } from "./healthcare";
 export { HOUSING_UNITS } from "./housing";
+export { EDUCATION_UNITS } from "./education";
+export { FOOD_UNITS } from "./food";
+export { TRANSPORTATION_UNITS } from "./transportation";
+export { INCOME_UNITS } from "./income";
+export { PUBLIC_SERVICES_UNITS } from "./public-services";
+export { VETERANS_UNITS } from "./veterans";
+export { ENVIRONMENT_UNITS } from "./environment";
 
 /**
  * Get all comparison units for a specific category

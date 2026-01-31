@@ -165,9 +165,18 @@ const sampleBudgetData: BudgetHierarchy = {
   fiscalYear: 2025,
 };
 
-export default function HomePage() {
+interface HomePageProps {
+  searchParams: Promise<{ budget?: string; unit?: string }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
   const currentFiscalYear = 2025;
   const lastUpdated = new Date("2025-10-01"); // FY2025 ended Sept 30, 2025
+
+  // Read URL params for pre-selected comparison
+  const params = await searchParams;
+  const initialBudgetItemId = params.budget;
+  const initialUnitId = params.unit;
 
   return (
     <HomePageClient
@@ -175,6 +184,8 @@ export default function HomePage() {
       budgetItems={ALL_BUDGET_ITEMS}
       currentFiscalYear={currentFiscalYear}
       lastUpdated={lastUpdated}
+      initialBudgetItemId={initialBudgetItemId}
+      initialUnitId={initialUnitId}
     />
   );
 }

@@ -62,6 +62,13 @@ export type {
  */
 export { useToast } from "./useToast";
 
+/**
+ * Hook for copying text to clipboard.
+ * Uses modern Clipboard API with fallback for older browsers.
+ */
+export { useClipboard, copyToClipboard } from "./useClipboard";
+export type { UseClipboardOptions, UseClipboardReturn } from "./useClipboard";
+
 // ============================================================================
 // DOM / Layout Hooks
 // ============================================================================

@@ -5,7 +5,7 @@ import { ALL_BUDGET_ITEMS, ALL_COMPARISON_UNITS } from "@/lib/data";
  * Next.js 15 Sitemap Generator
  *
  * Generates a comprehensive sitemap including:
- * - Static pages (home, about, methodology, contact, units, budget, compare)
+ * - Static pages (home, about, methodology, contact, units, budget, compare, wizard)
  * - Dynamic budget item pages
  * - Dynamic comparison unit pages
  *
@@ -67,6 +67,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Compare landing page - comparison builder
     {
       url: `${baseUrl}/compare`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    // Wizard page - interactive comparison builder
+    {
+      url: `${baseUrl}/wizard`,
       lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.8,

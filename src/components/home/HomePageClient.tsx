@@ -23,6 +23,10 @@ interface HomePageClientProps {
   budgetItems: BudgetItem[];
   currentFiscalYear: number;
   lastUpdated: Date;
+  /** Initial budget item ID from URL params */
+  initialBudgetItemId?: string;
+  /** Initial unit ID from URL params */
+  initialUnitId?: string;
 }
 
 /**
@@ -67,12 +71,17 @@ export const HomePageClient = memo<HomePageClientProps>(
     budgetItems,
     currentFiscalYear,
     lastUpdated,
+    initialBudgetItemId,
+    initialUnitId,
   }) {
     // Track selected comparison to sync between modules
-    const [selectedBudgetItemId, setSelectedBudgetItemId] =
-      useState<string>("program-f35");
-    const [selectedUnitId, setSelectedUnitId] =
-      useState<string>("teacher-salary");
+    // Use URL params if provided, otherwise fall back to defaults
+    const [selectedBudgetItemId, setSelectedBudgetItemId] = useState<string>(
+      initialBudgetItemId || "program-f35",
+    );
+    const [selectedUnitId, setSelectedUnitId] = useState<string>(
+      initialUnitId || "teacher-salary",
+    );
 
     // Handle selection changes from ComparisonBuilderModule
     // Memoized to prevent recreation on every render

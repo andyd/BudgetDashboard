@@ -139,9 +139,21 @@ export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
       <div>
         <div className="rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-900 to-slate-900/80 p-4 shadow-2xl sm:rounded-3xl sm:p-6 md:p-8">
           {/* Module Instructions */}
-          <p className="mb-4 text-center text-xs font-medium uppercase tracking-widest text-slate-500 sm:mb-6 sm:text-sm">
+          <p className="mb-2 text-center text-xs font-medium uppercase tracking-widest text-slate-500 sm:mb-3 sm:text-sm">
             Select a government expense and see what it could buy instead
           </p>
+          <Link
+            href="/wizard"
+            className="group mb-4 flex items-center justify-center gap-2 text-sm text-slate-400 transition-colors hover:text-emerald-400 sm:mb-6"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>
+              Not sure where to start?{" "}
+              <span className="underline underline-offset-2 group-hover:text-emerald-300">
+                Take the Budget Priority Quiz
+              </span>
+            </span>
+          </Link>
 
           {/* Responsive Layout: Horizontal on md+, Vertical on mobile */}
           <div className="flex flex-col items-stretch gap-4 md:flex-row">
@@ -280,22 +292,6 @@ export const ComparisonBuilderModule = memo<ComparisonBuilderModuleProps>(
             source="USAspending.gov"
             sourceUrl="https://www.usaspending.gov"
           />
-        </div>
-
-        {/* Wizard CTA */}
-        <div className="mt-4 flex justify-center">
-          <Link
-            href="/wizard"
-            className="group flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-emerald-400"
-          >
-            <Sparkles className="h-4 w-4" />
-            <span>
-              Not sure where to start?{" "}
-              <span className="underline underline-offset-2 group-hover:text-emerald-300">
-                Take the Budget Priority Quiz
-              </span>
-            </span>
-          </Link>
         </div>
       </div>
     );
